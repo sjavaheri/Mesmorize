@@ -1,0 +1,8 @@
+server.port = ${PORT:8080}
+
+spring.datasource.driver-class-name=org.postgresql.Driver
+spring.jpa.hibernate.ddl-auto=update
+spring.datasource.url=jdbc:postgresql
+spring.datasource.username=
+spring.datasource.password=
+logging.level.org.springframework=DEBUG
