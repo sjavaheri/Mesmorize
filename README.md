@@ -4,6 +4,7 @@ Welcome to Mesmorize: A Mesmerizing app for Memorization! This simple applicatio
 
 ### Contributors ☀️
 - Shidan Javaheri
+- Add Your Name Here 😄
 
 ### More Information 📖
 For more information, please consult our wiki page [here](https://github.com/sjavaheri/Mesmorize/wiki)! For details on how to contribute to this project, please consult [here](https://github.com/sjavaheri/Mesmorize/wiki#how-to-contribute--) !
