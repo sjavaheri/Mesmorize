@@ -41,6 +41,7 @@ public class Account {
     // Every Account has a set of Authorities that they can be granted
     private Set<Authority> authorities = new HashSet<Authority>();
 
+
     // -----------
     // Getters and Setters
     // -----------
