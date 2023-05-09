@@ -17,6 +17,10 @@ import jakarta.persistence.Id;
 @Entity
 public class Account {
 
+    // -----------
+    // Attributes
+    // -----------
+
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
@@ -37,8 +41,9 @@ public class Account {
     // Every Account has a set of Authorities that they can be granted
     private Set<Authority> authorities = new HashSet<Authority>();
 
-    public Account() {
-    }
+    // -----------
+    // Getters and Setters
+    // -----------
 
     public String getId() {
         return id;
