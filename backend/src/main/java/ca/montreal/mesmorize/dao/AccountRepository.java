@@ -10,6 +10,11 @@ import ca.montreal.mesmorize.model.Account;
 
 public interface AccountRepository extends CrudRepository<Account, String> {
 
+    /**
+     * Find account by username
+     * @param username the username of the account
+     * @return an account
+     */
     Account findAccountByUsername(String username);
 
 }

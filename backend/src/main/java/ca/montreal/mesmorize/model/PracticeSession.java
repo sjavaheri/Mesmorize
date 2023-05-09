@@ -31,6 +31,8 @@ public class PracticeSession {
     @Column(nullable = false)
     private int minutes;
 
+    
+
     // -----------
     // Getters and Setters
     // -----------
