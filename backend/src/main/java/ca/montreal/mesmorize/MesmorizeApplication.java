@@ -36,6 +36,8 @@ public class MesmorizeApplication {
 				// encode the password
 				String encoded = passwordEncoder.encode("Password01");
 				account.setPassword(encoded);
+				account.setFirstname("Shidan");
+				account.setLastname("Javaheri");
 				account.getAuthorities().add(Authority.Admin);
 				accountRepository.save(account);
 			}

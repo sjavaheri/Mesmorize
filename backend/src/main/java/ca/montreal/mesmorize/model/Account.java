@@ -3,10 +3,12 @@ package ca.montreal.mesmorize.model;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import ca.montreal.mesmorize.configuration.Authority;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 /**
@@ -16,24 +18,33 @@ import jakarta.persistence.Id;
 public class Account {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    private String id;
+    
+    @Column(nullable = false)
+    private String firstname; 
 
+    @Column(nullable = false)
+    private String lastname;
+
+    @Column(nullable = false)
     private String username;
 
+    @Column(nullable = false)
     private String password;
 
     // Every Account has a set of Authorities that they can be granted
-    private Set < Authority > authorities = new HashSet <Authority> ();
+    private Set<Authority> authorities = new HashSet<Authority>();
 
     public Account() {
     }
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -61,6 +72,19 @@ public class Account {
         this.authorities = authorities;
     }
 
+    public String getLastname() {
+        return lastname;
+    }
 
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
 
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
 }
