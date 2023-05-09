@@ -8,7 +8,7 @@ import ca.montreal.mesmorize.model.Account;
  * Repository for Account
  */
 
-public interface AccountRepository extends CrudRepository<Account, Integer> {
+public interface AccountRepository extends CrudRepository<Account, String> {
 
     Account findAccountByUsername(String username);
 
