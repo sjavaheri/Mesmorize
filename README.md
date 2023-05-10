@@ -4,6 +4,7 @@ Welcome to Mesmorize: A Mesmerizing app for Memorization! This simple applicatio
 
 ### Contributors ☀️
 - Shidan Javaheri
+- Zarine Ardekani
 - Add Your Name Here 😄
 
 ### More Information 📖
