@@ -1,11 +1,16 @@
 package ca.montreal.mesmorize.model;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 /**
  * The theme class, for identifying the theme associated with each item that is
@@ -16,7 +21,7 @@ import jakarta.persistence.Id;
 public class Theme {
 
     // -----------
-    // Getters and Setters
+    // Attributes
     // -----------
 
     @Id
@@ -27,10 +32,18 @@ public class Theme {
     @Column(nullable = false, unique = true)
     private String name;
 
+    // ------------
+    // Associations
+    // ------------
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "account_id")
+    private Account account;
+
     // -----------
     // Getters and Setters
     // -----------
-    
+
     public String getId() {
         return id;
     }
@@ -47,6 +60,13 @@ public class Theme {
         this.name = name;
     }
 
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
+    }
     
 
 }

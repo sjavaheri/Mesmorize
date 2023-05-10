@@ -32,7 +32,7 @@ public class Account {
     @Column(nullable = false)
     private String lastname;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String username;
 
     @Column(nullable = false)
@@ -40,6 +40,7 @@ public class Account {
 
     // Every Account has a set of Authorities that they can be granted
     private Set<Authority> authorities = new HashSet<Authority>();
+
 
     // -----------
     // Getters and Setters

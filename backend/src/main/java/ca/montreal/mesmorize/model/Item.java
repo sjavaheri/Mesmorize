@@ -46,7 +46,7 @@ public class Item {
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
 
     @Column(nullable = false)
@@ -84,7 +84,7 @@ public class Item {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "item_id", nullable = true)
-    private List<PracticeSession> practiceSessions;
+    private Set<PracticeSession> practiceSessions;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -95,6 +95,7 @@ public class Item {
     // Getters and Setters
     // -----------
 
+    
     public String getId() {
         return id;
     }
@@ -167,11 +168,11 @@ public class Item {
         this.themes = themes;
     }
 
-    public List<PracticeSession> getPracticeSessions() {
+    public Set<PracticeSession> getPracticeSessions() {
         return practiceSessions;
     }
 
-    public void setPracticeSessions(List<PracticeSession> practiceSessions) {
+    public void setPracticeSessions(Set<PracticeSession> practiceSessions) {
         this.practiceSessions = practiceSessions;
     }
 
@@ -182,5 +183,7 @@ public class Item {
     public void setSource(Source source) {
         this.source = source;
     }
+
+
 
 }
