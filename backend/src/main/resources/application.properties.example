@@ -1,0 +1,10 @@
+server.port = ${PORT:8080}
+
+spring.datasource.driver-class-name=org.postgresql.Driver
+spring.jpa.hibernate.ddl-auto=create-drop
+spring.datasource.url=jdbc:postgresql://localhost:5432/mesmorize
+spring.datasource.username=postgres
+spring.datasource.password=password
+logging.level.org.springframework=DEBUG
+
+
