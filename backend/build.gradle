@@ -23,3 +23,19 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+test {
+    useJUnitPlatform()
+    systemProperties([
+            //Random in method level
+            'junit.jupiter.testmethod.order.default': 'org.junit.jupiter.api.MethodOrderer$Random',
+            // Random in class level
+            'junit.jupiter.testclass.order.default' : 'org.junit.jupiter.api.ClassOrderer$Random',
+    ])
+
+    //To print the JUnit logs in console
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
+
