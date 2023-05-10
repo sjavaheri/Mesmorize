@@ -45,13 +45,13 @@ jobs:
         run: cp backend/src/main/resources/application.properties.example backend/src/main/resources/application.properties
 
       - name: Make gradlew executable
-        run: chmod +x ./gradlew
+        run: chmod +x ./backend/gradlew
 
       - name: Execute Gradle test
-        run: ./gradlew test
+        run: ./backend/gradlew test
 
       - name: Execute Gradle build
-        run: ./gradlew build
+        run: ./backend/gradlew build
 
 
 
