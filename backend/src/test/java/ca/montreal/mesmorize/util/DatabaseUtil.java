@@ -1,7 +1,6 @@
 package ca.montreal.mesmorize.util;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,11 +48,11 @@ public class DatabaseUtil {
     /**
      * Method to create and save an account
      * 
-     * @param firstname
+     * @param firstname 
      * @param lastname
      * @param username
      * @param password
-     * @return the created {@link Account} object
+     * @return the {@link Account} object right before being saved
      * @author Shidan Javaheri
      */
     public Account createAndSaveAccount(String firstname, String lastname, String username, String password) {
@@ -62,8 +61,8 @@ public class DatabaseUtil {
         account.setLastname(lastname);
         account.setUsername(username);
         account.setPassword(password);
-        Account savedAccount = accountRepository.save(account);
-        return savedAccount;
+        accountRepository.save(account);
+        return account;
     }
 
     /**
@@ -79,11 +78,11 @@ public class DatabaseUtil {
      * @param themes
      * @param practiceSessions
      * @param source
-     * @return the created {@link Item object}
+     * @return the {@link Item object} right before being saved
      * @author Shidan Javaheri
      */
     public Item createAndSaveItem(String name, String words, Date dateCreated, ItemType itemType, boolean favorite,
-            boolean learnt, Account account, Set<Theme> themes, List<PracticeSession> practiceSessions, Source source) {
+            boolean learnt, Account account, Set<Theme> themes, Set<PracticeSession> practiceSessions, Source source) {
         Item item = new Item();
         item.setName(name);
         item.setWords(words);
@@ -95,8 +94,8 @@ public class DatabaseUtil {
         item.setThemes(themes);
         item.setPracticeSessions(practiceSessions);
         item.setSource(source);
-        Item savedItem = itemRepository.save(item);
-        return savedItem;
+        itemRepository.save(item);
+        return item;
     }
 
     /**
@@ -104,31 +103,37 @@ public class DatabaseUtil {
      * 
      * @param name
      * @param account
-     * @return the created {@link Theme} object
+     * @return the {@link Theme} object right before being saved
      * @author Shidan Javaheri
      */
     public Theme createAndSaveTheme(String name, Account account) {
         Theme theme = new Theme();
         theme.setName(name);
-        theme.setAccount(account);
-        Theme savedTheme = themeRepository.save(theme);
-        return savedTheme;
+
+        if (account != null) {
+            theme.setAccount(account);
+        }
+
+        themeRepository.save(theme);
+        return theme;
     }
 
     /**
      * Method to create and save a practice session
      * 
      * @param date
-     * @param account
-     * @return the created {@link PracticeSession} object
+     * @param minutes
+     * @param item
+     * @return the {@link PracticeSession} object right before being saved
      * @author Shidan Javaheri
      */
-    public PracticeSession createAndSavePracticeSession(Date datePracticed, int minutes) {
+    public PracticeSession createAndSavePracticeSession(Date datePracticed, int minutes, Item item) {
         PracticeSession practiceSession = new PracticeSession();
         practiceSession.setDatePracticed(datePracticed);
         practiceSession.setMinutes(minutes);
-        PracticeSession savedPracticeSession = practiceSessionRepository.save(practiceSession);
-        return savedPracticeSession;
+        practiceSession.setItem(item);
+        practiceSessionRepository.save(practiceSession);
+        return practiceSession;
 
     }
 
@@ -136,16 +141,18 @@ public class DatabaseUtil {
      * Method to create and save a source
      * 
      * @param name
-     * @param account
+     * @param description
+     * @param author
      * @return the created {@link Source} object
      * @author Shidan Javaheri
      */
-    public Source createAndSaveSource(String title, String description) {
+    public Source createAndSaveSource(String title, String description, String author) {
         Source source = new Source();
         source.setTitle(title);
         source.setDescription(description);
-        Source savedSource = sourceRepository.save(source);
-        return savedSource;
+        source.setAuthor(author);
+        sourceRepository.save(source);
+        return source;
 
     }
 

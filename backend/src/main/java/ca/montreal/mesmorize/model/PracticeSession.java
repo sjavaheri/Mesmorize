@@ -8,6 +8,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 /**
  * The PracticeSession Class, to store a history of each time a quote is
@@ -31,7 +33,9 @@ public class PracticeSession {
     @Column(nullable = false)
     private int minutes;
 
-    
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "item_id", nullable = false)
+    private Item item;
 
     // -----------
     // Getters and Setters
@@ -60,5 +64,14 @@ public class PracticeSession {
     public void setMinutes(int minutes) {
         this.minutes = minutes;
     }
+
+    public Item getItem() {
+        return item;
+    }
+
+    public void setItem(Item item) {
+        this.item = item;
+    }
+    
 
 }

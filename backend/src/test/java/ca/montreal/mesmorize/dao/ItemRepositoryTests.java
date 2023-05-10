@@ -1,7 +1,14 @@
 package ca.montreal.mesmorize.dao;
 
-import javax.xml.crypto.Data;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import java.time.Instant;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.xml.crypto.Data;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -10,8 +17,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import ca.montreal.mesmorize.model.Account;
+import ca.montreal.mesmorize.model.Item;
+import ca.montreal.mesmorize.model.PracticeSession;
 import ca.montreal.mesmorize.model.Source;
 import ca.montreal.mesmorize.model.Theme;
+import ca.montreal.mesmorize.model.Item.ItemType;
 import ca.montreal.mesmorize.util.DatabaseUtil;
 
 /**
@@ -25,6 +35,9 @@ public class ItemRepositoryTests {
 
     @Autowired
     DatabaseUtil databaseUtil;
+
+    @Autowired
+    ItemRepository itemRepository;
 
     /**
      * Method to clear the database before all tests
@@ -48,6 +61,11 @@ public class ItemRepositoryTests {
         databaseUtil.clearDatabase();
     }
 
+    /** 
+     * Test persisting and loading an item
+     * 
+     * @author Shidan Javaheri
+     */
     @Test
     public void testPersistAndLoadItem() {
 
@@ -55,14 +73,29 @@ public class ItemRepositoryTests {
         Account account = databaseUtil.createAndSaveAccount("Mo", "Salah", "mo.salah@gmail.com", "password");
 
         // create and save a source with all of its properties
-        Source source = databaseUtil.createAndSaveSource("Book 1", "Arising To Serve"); 
+        Source source = databaseUtil.createAndSaveSource("Book 1", "Arising To Serve", "Ruhi Institute");
 
-        // create and save a theme wiht all of its properties
+        // create and save a theme with all of its properties
         Theme theme = databaseUtil.createAndSaveTheme("Joy", null);
-        
 
+        // create and save an Item with all of its properties
+        Set<Theme> themes = new HashSet<Theme>();
+        themes.add(theme);
+        Set<PracticeSession> practiceSessions = new HashSet<PracticeSession>();
+        Item item = databaseUtil.createAndSaveItem("O Befriended Stranger",
+                "O Befriended Stranger! The candle of thine heart...", Date.from(Instant.now()), ItemType.Song, false,
+                false, account, themes,practiceSessions,source);
 
-        
+        // load the item from the database
+        Item loadedItem = itemRepository.findItemByName("O Befriended Stranger");
+
+        // assert that the loaded item is the same as the saved item
+        assertNotNull(loadedItem.getId(), "The loaded item's id should not be null");
+        assertEquals(item.getName(), loadedItem.getName());
+        assertEquals(item.getWords(), loadedItem.getWords());
+        assertEquals(item.getDateCreated(), loadedItem.getDateCreated());
+        assertEquals(item.getItemType(), loadedItem.getItemType());
+        assertEquals(item.getAccount().getUsername(), loadedItem.getAccount().getUsername());
 
     }
 

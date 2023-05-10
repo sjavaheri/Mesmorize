@@ -29,6 +29,9 @@ public class Source {
     @Column(nullable = false)
     private String description;
 
+    @Column(nullable = false)
+    private String author;
+
     // -----------
     // Getters and Setters
     // -----------
@@ -56,5 +59,15 @@ public class Source {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    
 
 }
