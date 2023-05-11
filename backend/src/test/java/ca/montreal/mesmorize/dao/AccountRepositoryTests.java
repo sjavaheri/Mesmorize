@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import ca.montreal.mesmorize.model.Account;
-import ca.montreal.mesmorize.util.DatabaseUtil;
+import ca.montreal.mesmorize.util.DatabaseUtilTest;
 
 /**
  * Testing the Account repository, which saves an app user and all of its
@@ -25,7 +25,7 @@ public class AccountRepositoryTests {
     private AccountRepository accountRepository;
 
     @Autowired
-    private DatabaseUtil databaseUtil;
+    private DatabaseUtilTest databaseUtil;
 
     /**
      * Method to clear the database before all tests
@@ -34,7 +34,7 @@ public class AccountRepositoryTests {
      */
 
     @BeforeAll
-    public static void clearDatabaseBefore(@Autowired DatabaseUtil databaseUtil) {
+    public static void clearDatabaseBefore(@Autowired DatabaseUtilTest databaseUtil) {
         databaseUtil.clearDatabase();
     }
 
@@ -57,7 +57,7 @@ public class AccountRepositoryTests {
      */
 
      @Test
-     public void testPersistAndLoadAccount(@Autowired DatabaseUtil databaseUtil) {
+     public void testPersistAndLoadAccount(@Autowired DatabaseUtilTest databaseUtil) {
 
         // create and save the account and all of its properties
         Account account = databaseUtil.createAndSaveAccount("Mo", "Salah", "mo.salah@gmail.com", "password");

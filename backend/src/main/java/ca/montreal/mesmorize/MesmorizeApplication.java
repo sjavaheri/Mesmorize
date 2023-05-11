@@ -29,7 +29,7 @@ public class MesmorizeApplication {
 	public CommandLineRunner commandLineRunner(AccountRepository accountRepository, PasswordEncoder passwordEncoder) {
 		return args -> {
 
-			/** Account CREATION AT BOOTSTRAP */
+			/** Account Creation at BootStrap */
 			if (accountRepository.findAccountByUsername("shidan.javaheri@mail.mcgill.ca") == null) {
 				Account account = new Account();
 				account.setUsername("shidan.javaheri@mail.mcgill.ca");
@@ -40,8 +40,24 @@ public class MesmorizeApplication {
 				account.setLastname("Javaheri");
 				account.getAuthorities().add(Authority.Admin);
 				accountRepository.save(account);
-			}
-			;
+			};
+
+			/** Account Creation at BootStrap for Frontend Server */
+			if (accountRepository.findAccountByUsername("server@local.com") == null) {
+				Account account = new Account();
+				account.setUsername("server@local.com");
+				// encode the password
+				String encoded = passwordEncoder.encode("ajsdhfqoew134509lasdfq3452k2345hk34jb523j46kj7456j745j6b2456jb");
+				account.setPassword(encoded);
+				account.setFirstname("Server");
+				account.setLastname("Local");
+				account.getAuthorities().add(Authority.Server);
+				accountRepository.save(account);
+			};
+
+
+
+
 		};
 	}
 
