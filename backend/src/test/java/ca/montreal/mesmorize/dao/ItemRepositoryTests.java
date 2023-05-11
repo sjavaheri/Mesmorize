@@ -20,7 +20,7 @@ import ca.montreal.mesmorize.model.PracticeSession;
 import ca.montreal.mesmorize.model.Source;
 import ca.montreal.mesmorize.model.Theme;
 import ca.montreal.mesmorize.model.Item.ItemType;
-import ca.montreal.mesmorize.util.DatabaseUtil;
+import ca.montreal.mesmorize.util.DatabaseUtilTest;
 
 /**
  * Testing the Item repository, which saves an item and all of its attributes
@@ -32,7 +32,7 @@ import ca.montreal.mesmorize.util.DatabaseUtil;
 public class ItemRepositoryTests {
 
     @Autowired
-    DatabaseUtil databaseUtil;
+    DatabaseUtilTest databaseUtil;
 
     @Autowired
     ItemRepository itemRepository;
@@ -44,7 +44,7 @@ public class ItemRepositoryTests {
      */
 
     @BeforeAll
-    public static void clearDatabaseBefore(@Autowired DatabaseUtil databaseUtil) {
+    public static void clearDatabaseBefore(@Autowired DatabaseUtilTest databaseUtil) {
         databaseUtil.clearDatabase();
     }
 
@@ -55,7 +55,7 @@ public class ItemRepositoryTests {
      */
 
     @AfterEach
-    public void clearDatabaseAfter(@Autowired DatabaseUtil databaseUtil) {
+    public void clearDatabaseAfter(@Autowired DatabaseUtilTest databaseUtil) {
         databaseUtil.clearDatabase();
     }
 

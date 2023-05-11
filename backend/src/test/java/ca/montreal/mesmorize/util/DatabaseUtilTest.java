@@ -1,10 +1,14 @@
 package ca.montreal.mesmorize.util;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+import ca.montreal.mesmorize.configuration.Authority;
 import ca.montreal.mesmorize.dao.*;
 import ca.montreal.mesmorize.model.Account;
 import ca.montreal.mesmorize.model.Item;
@@ -15,7 +19,7 @@ import ca.montreal.mesmorize.model.Item.ItemType;
 
 /** Class for reusable database methods needed across other classes */
 @Configuration
-public class DatabaseUtil {
+public class DatabaseUtilTest {
 
     @Autowired
     private AccountRepository accountRepository;
@@ -31,6 +35,9 @@ public class DatabaseUtil {
 
     @Autowired
     private ThemeRepository themeRepository;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     /**
      * Method to clear the database
@@ -48,7 +55,7 @@ public class DatabaseUtil {
     /**
      * Method to create and save an account
      * 
-     * @param firstname 
+     * @param firstname
      * @param lastname
      * @param username
      * @param password
@@ -56,11 +63,13 @@ public class DatabaseUtil {
      * @author Shidan Javaheri
      */
     public Account createAndSaveAccount(String firstname, String lastname, String username, String password) {
+        
         Account account = new Account();
         account.setFirstname(firstname);
         account.setLastname(lastname);
         account.setUsername(username);
-        account.setPassword(password);
+        account.setPassword(passwordEncoder.encode(password));
+        account.getAuthorities().add(Authority.User);
         accountRepository.save(account);
         return account;
     }
