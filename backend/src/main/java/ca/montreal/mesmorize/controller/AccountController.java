@@ -45,7 +45,7 @@ public class AccountController {
         }
 
         // unpack DTO
-        String username = accountDto.getUsername();
+        String username = "badUsername@email.com";
         String password = accountDto.getPassword();
         String firstname = accountDto.getFirstname();
         String lastname = accountDto.getLastname();
