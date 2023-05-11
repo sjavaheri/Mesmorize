@@ -19,7 +19,7 @@ public class DemoController {
    * @throws GlobalException with http status 418 and message "You are a teapot", for demo purposes
    */
   @GetMapping
-  @PreAuthorize("hasAuthority('Owner')")
+  @PreAuthorize("hasAuthority('Admin')")
   public String createIdea() throws GlobalException {
     // Concept #1 - controllers don't need to take usernames as parameters - you get
     // them with the .getName() method of the token

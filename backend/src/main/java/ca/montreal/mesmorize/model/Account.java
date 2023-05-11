@@ -4,6 +4,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import ca.montreal.mesmorize.configuration.Authority;
 import jakarta.persistence.Column;
@@ -17,6 +19,8 @@ import jakarta.persistence.Id;
 @Entity
 public class Account {
 
+
+    
     // -----------
     // Attributes
     // -----------
@@ -25,9 +29,9 @@ public class Account {
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
-    
+
     @Column(nullable = false)
-    private String firstname; 
+    private String firstname;
 
     @Column(nullable = false)
     private String lastname;
@@ -41,6 +45,30 @@ public class Account {
     // Every Account has a set of Authorities that they can be granted
     private Set<Authority> authorities = new HashSet<Authority>();
 
+    // -----------
+    // Constructors
+    // -----------
+    public Account() {
+
+    }
+
+    /**
+     * Create an account wihtout setting its Id
+     * 
+     * @param firstname
+     * @param lastname
+     * @param username
+     * @param password that is unencoded 
+     * @param authority
+     * @author Shidan Javaheri
+     */
+    public Account(String firstname, String lastname, String username, String password, Authority authority) {
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.username = username;
+        this.password = password;
+        this.authorities.add(authority);
+    }
 
     // -----------
     // Getters and Setters

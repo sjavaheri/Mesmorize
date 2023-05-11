@@ -29,7 +29,8 @@ public class AccountController {
     DtoUtil dtoUtil;
 
     /**
-     * Endpoint to create an account
+     * Endpoint to create an account with a User Authority. For now, Admin accounts
+     * cannot be created from the frontend
      * 
      * @param accountDto
      * @return a response entity with HTTP status created and the account dto

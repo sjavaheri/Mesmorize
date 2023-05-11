@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import ca.montreal.mesmorize.dao.AccountRepository;
@@ -25,6 +26,9 @@ public class AccountService implements UserDetailsService {
 
     @Autowired
     DatabaseUtil databaseUtil;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     /**
      * Shows spring how to find the accounts in the database, so it verify the
@@ -102,7 +106,7 @@ public class AccountService implements UserDetailsService {
         }
 
         // now that validation checks have passed, create and save the account
-        Account newAccount = databaseUtil.createAndSaveAccount(firstname, lastname, username, password);
+        Account newAccount = databaseUtil.createAndSaveAccount(firstname, lastname, username, passwordEncoder.encode(password));
         return newAccount;
 
     }
