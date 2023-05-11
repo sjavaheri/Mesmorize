@@ -68,7 +68,7 @@ public class TestAccountService {
         // setup mocks
         when(accountRepository.findAccountByUsername("test1@gmail.com")).thenAnswer((InvocationOnMock invocation) -> null); 
         when(passwordEncoder.encode(any(String.class))).thenAnswer((InvocationOnMock invocation) -> "encodedPassword1");
-        when(databaseUtil.createAndSaveAccount(any(String.class), any(String.class), any(String.class), any(String.class))).thenAnswer((InvocationOnMock invocation) -> this.validAccount);
+        when(databaseUtil.createAndSaveAccount(any(String.class), any(String.class),"test1@gmail.com", any(String.class))).thenAnswer((InvocationOnMock invocation) -> this.validAccount);
 
         // call the service method 
         Account account = accountService.createAccount("Test1", "Lastname", "test1@gmail.com", "a Cool password1");
