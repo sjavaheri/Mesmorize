@@ -106,7 +106,7 @@ public class AccountService implements UserDetailsService {
         }
 
         // now that validation checks have passed, create and save the account
-        Account newAccount = databaseUtil.createAndSaveAccount(firstname, lastname, "badUsername@email.com", passwordEncoder.encode(password));
+        Account newAccount = databaseUtil.createAndSaveAccount(firstname, lastname, username, passwordEncoder.encode(password));
         return newAccount;
 
     }
