@@ -94,7 +94,6 @@ public class Item {
     // Getters and Setters
     // -----------
 
-    
     public String getId() {
         return id;
     }
@@ -182,7 +181,5 @@ public class Item {
     public void setSource(Source source) {
         this.source = source;
     }
-
-
 
 }

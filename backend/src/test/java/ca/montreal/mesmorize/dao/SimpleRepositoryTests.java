@@ -86,11 +86,15 @@ public class SimpleRepositoryTests {
     @Test
     public void testPersistAndLoadTheme() {
 
+        // create the server account for the theme
+        Account serverAccount =  databaseUtil.createAndSaveAccount("Server", "Local", "server@local.com",
+                "ka;sp3ru3134i5230;sldjfkpq093481u345klj093845askdjfp");
+
         // create and save a theme with all of its properties
-        Theme theme = databaseUtil.createAndSaveTheme("Joy", null);
+        Theme theme = databaseUtil.createAndSaveTheme("Joy", serverAccount);
 
         // load the theme
-        Theme loadedTheme = themeRepository.findThemeByName("Joy");
+        Theme loadedTheme = themeRepository.findThemeByNameAndAccountUsername("Joy", "server@local.com");
 
         // assert that the loaded theme is the same as the saved theme
         assertNotNull(loadedTheme.getId(), "The loaded theme should have an id");
@@ -102,7 +106,7 @@ public class SimpleRepositoryTests {
     public void testPersistAndLoadPracticeSession() {
 
         // create an item - requires creating everything else
-        
+
         // create and save the account with all of its properties
         Account account = databaseUtil.createAndSaveAccount("Mo", "Salah", "mo.salah@gmail.com", "password");
 
@@ -118,24 +122,24 @@ public class SimpleRepositoryTests {
         Set<PracticeSession> practiceSessions = new HashSet<PracticeSession>();
         databaseUtil.createAndSaveItem("O Befriended Stranger",
                 "O Befriended Stranger! The candle of thine heart...", Date.from(Instant.now()), ItemType.Song, false,
-                false, account, themes,practiceSessions,source);
-        
-        // get the item 
+                false, account, themes, practiceSessions, source);
+
+        // get the item
         Item item = itemRepository.findItemByName("O Befriended Stranger");
-        
+
         // create and save a practice session with all of its properties
-        PracticeSession practiceSession = databaseUtil.createAndSavePracticeSession(Date.from(Instant.now()), 10,item);
+        PracticeSession practiceSession = databaseUtil.createAndSavePracticeSession(Date.from(Instant.now()), 10, item);
 
         // load the practice session
-        ArrayList<PracticeSession> loadedPracticeSession = practiceSessionRepository.findPracticeSessionByItemId(item.getId());
+        ArrayList<PracticeSession> loadedPracticeSession = practiceSessionRepository
+                .findPracticeSessionByItemId(item.getId());
 
-        // assert that the loaded practice session is the same as the saved practice session
+        // assert that the loaded practice session is the same as the saved practice
+        // session
         assertEquals(loadedPracticeSession.size(), 1, "There should be one practice session");
         assertNotNull(loadedPracticeSession.get(0).getId(), "The loaded practice session should have an id");
         assertEquals(practiceSession.getMinutes(), loadedPracticeSession.get(0).getMinutes());
         assertEquals(practiceSession.getDatePracticed(), loadedPracticeSession.get(0).getDatePracticed());
-        
-
 
     }
 

@@ -19,8 +19,6 @@ import jakarta.persistence.Id;
 @Entity
 public class Account {
 
-
-    
     // -----------
     // Attributes
     // -----------
@@ -58,7 +56,7 @@ public class Account {
      * @param firstname
      * @param lastname
      * @param username
-     * @param password that is unencoded 
+     * @param password  that must ALREADY be encoded
      * @param authority
      * @author Shidan Javaheri
      */
