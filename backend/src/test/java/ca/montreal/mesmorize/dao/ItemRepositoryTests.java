@@ -74,7 +74,7 @@ public class ItemRepositoryTests {
         Source source = databaseUtil.createAndSaveSource("Book 1", "Arising To Serve", "Ruhi Institute");
 
         // create and save a theme with all of its properties
-        Theme theme = databaseUtil.createAndSaveTheme("Joy", null);
+        Theme theme = databaseUtil.createAndSaveTheme("Joy", account);
 
         // create and save an Item with all of its properties
         Set<Theme> themes = new HashSet<Theme>();
