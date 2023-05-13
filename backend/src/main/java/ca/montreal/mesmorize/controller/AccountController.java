@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 import ca.montreal.mesmorize.dto.AccountDto;
 import ca.montreal.mesmorize.exception.GlobalException;
 import ca.montreal.mesmorize.service.AccountService;
-import ca.montreal.mesmorize.util.DtoUtil;
 
 /**
  * API endpoints for all Account related methods
@@ -24,9 +23,6 @@ public class AccountController {
 
     @Autowired
     AccountService accountService;
-
-    @Autowired
-    DtoUtil dtoUtil;
 
     /**
      * Endpoint to create an account with a User Authority. For now, Admin accounts
@@ -51,8 +47,7 @@ public class AccountController {
         String lastname = accountDto.getLastname();
 
         // create account
-        AccountDto newAccountDto = dtoUtil
-                .convertAccountToDto(accountService.createAccount(firstname, lastname, username, password));
+        AccountDto newAccountDto = new AccountDto(accountService.createAccount(firstname, lastname, username, password));
 
         return new ResponseEntity<AccountDto>(newAccountDto, HttpStatus.CREATED);
 

@@ -121,7 +121,7 @@ public class SimpleRepositoryTests {
         themes.add(theme);
         Set<PracticeSession> practiceSessions = new HashSet<PracticeSession>();
         databaseUtil.createAndSaveItem("O Befriended Stranger",
-                "O Befriended Stranger! The candle of thine heart...", Date.from(Instant.now()), ItemType.Song, false,
+                "O Befriended Stranger! The candle of thine heart...", ItemType.Song, false,
                 false, account, themes, practiceSessions, source);
 
         // get the item

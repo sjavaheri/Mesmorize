@@ -1,5 +1,10 @@
 package ca.montreal.mesmorize.dto;
 
+import org.springframework.http.HttpStatus;
+
+import ca.montreal.mesmorize.exception.GlobalException;
+import ca.montreal.mesmorize.model.Account;
+
 /**
  * Data transfer object for the AppUser class.
  * Adapted from code for ECSE 428 Group Project
@@ -33,6 +38,26 @@ public class AccountDto {
         this.firstname = firstname;
         this.lastname = lastname;
     }
+
+        /**
+     * Converts a Account to a AccountDto
+     *
+     * @param account - the Account to be converted
+     * @return the converted AccountDto
+     * @author Shidan Javaheri
+     */
+    public AccountDto(Account account) {
+        if (account == null) {
+            throw new GlobalException(HttpStatus.BAD_REQUEST, "Account is null");
+        }
+        // Convert Account to AccountDto
+        this.id = account.getId();
+        this.username = account.getUsername();
+        this.password = account.getPassword();
+        this.firstname = account.getFirstname();
+        this.lastname = account.getLastname();
+    }
+
 
     /**
      * Get the id of the user.
@@ -124,3 +149,5 @@ public class AccountDto {
         this.password = password;
     }
 }
+
+
