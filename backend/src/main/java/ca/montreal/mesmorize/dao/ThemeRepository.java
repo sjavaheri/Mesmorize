@@ -1,8 +1,5 @@
 package ca.montreal.mesmorize.dao;
 
-import java.util.ArrayList;
-import java.util.Set;
-
 import org.springframework.data.repository.CrudRepository;
 
 import ca.montreal.mesmorize.model.Theme;

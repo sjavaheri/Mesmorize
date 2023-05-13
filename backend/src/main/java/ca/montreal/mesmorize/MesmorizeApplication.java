@@ -7,7 +7,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import ca.montreal.mesmorize.configuration.Authority;
 import ca.montreal.mesmorize.dao.AccountRepository;
 import ca.montreal.mesmorize.dao.ThemeRepository;
 import ca.montreal.mesmorize.model.Account;

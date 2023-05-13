@@ -21,7 +21,7 @@ import ca.montreal.mesmorize.model.PracticeSession;
 import ca.montreal.mesmorize.model.Source;
 import ca.montreal.mesmorize.model.Theme;
 import ca.montreal.mesmorize.model.Item.ItemType;
-import ca.montreal.mesmorize.util.DatabaseUtilTest;
+import ca.montreal.mesmorize.util.DatabaseUtil;
 
 /**
  * Tests for the Simple repositories - Source, Theme and PracticeSession
@@ -31,7 +31,7 @@ import ca.montreal.mesmorize.util.DatabaseUtilTest;
 public class SimpleRepositoryTests {
 
     @Autowired
-    DatabaseUtilTest databaseUtil;
+    DatabaseUtil databaseUtil;
 
     @Autowired
     SourceRepository sourceRepository;
@@ -52,7 +52,7 @@ public class SimpleRepositoryTests {
      */
 
     @BeforeAll
-    public static void clearDatabaseBefore(@Autowired DatabaseUtilTest databaseUtil) {
+    public static void clearDatabaseBefore(@Autowired DatabaseUtil databaseUtil) {
         databaseUtil.clearDatabase();
     }
 
@@ -63,7 +63,7 @@ public class SimpleRepositoryTests {
      */
 
     @AfterEach
-    public void clearDatabaseAfter(@Autowired DatabaseUtilTest databaseUtil) {
+    public void clearDatabaseAfter(@Autowired DatabaseUtil databaseUtil) {
         databaseUtil.clearDatabase();
     }
 
