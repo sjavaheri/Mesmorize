@@ -21,7 +21,7 @@ import ca.montreal.mesmorize.model.PracticeSession;
 import ca.montreal.mesmorize.model.Source;
 import ca.montreal.mesmorize.model.Theme;
 import ca.montreal.mesmorize.model.Item.ItemType;
-import ca.montreal.mesmorize.util.DatabaseUtilTest;
+import ca.montreal.mesmorize.util.DatabaseUtil;
 
 /**
  * Tests for the Simple repositories - Source, Theme and PracticeSession
@@ -31,7 +31,7 @@ import ca.montreal.mesmorize.util.DatabaseUtilTest;
 public class SimpleRepositoryTests {
 
     @Autowired
-    DatabaseUtilTest databaseUtil;
+    DatabaseUtil databaseUtil;
 
     @Autowired
     SourceRepository sourceRepository;
@@ -52,7 +52,7 @@ public class SimpleRepositoryTests {
      */
 
     @BeforeAll
-    public static void clearDatabaseBefore(@Autowired DatabaseUtilTest databaseUtil) {
+    public static void clearDatabaseBefore(@Autowired DatabaseUtil databaseUtil) {
         databaseUtil.clearDatabase();
     }
 
@@ -63,7 +63,7 @@ public class SimpleRepositoryTests {
      */
 
     @AfterEach
-    public void clearDatabaseAfter(@Autowired DatabaseUtilTest databaseUtil) {
+    public void clearDatabaseAfter(@Autowired DatabaseUtil databaseUtil) {
         databaseUtil.clearDatabase();
     }
 
@@ -121,7 +121,7 @@ public class SimpleRepositoryTests {
         themes.add(theme);
         Set<PracticeSession> practiceSessions = new HashSet<PracticeSession>();
         databaseUtil.createAndSaveItem("O Befriended Stranger",
-                "O Befriended Stranger! The candle of thine heart...", Date.from(Instant.now()), ItemType.Song, false,
+                "O Befriended Stranger! The candle of thine heart...", ItemType.Song, false,
                 false, account, themes, practiceSessions, source);
 
         // get the item

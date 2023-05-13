@@ -4,8 +4,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.hibernate.annotations.GenericGenerator;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import ca.montreal.mesmorize.configuration.Authority;
 import jakarta.persistence.Column;

@@ -15,5 +15,13 @@ public interface ThemeRepository extends CrudRepository<Theme, String> {
      * @return a theme
      */
     Theme findThemeByNameAndAccountUsername(String name, String username);
+
+    /**
+     * Find a theme by its id
+     * @param id
+     * @return the theme object, not optional
+     */
+    Theme findThemeById(String id); 
+
     
 }

@@ -3,8 +3,6 @@ package ca.montreal.mesmorize.dao;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import java.time.Instant;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,7 +18,7 @@ import ca.montreal.mesmorize.model.PracticeSession;
 import ca.montreal.mesmorize.model.Source;
 import ca.montreal.mesmorize.model.Theme;
 import ca.montreal.mesmorize.model.Item.ItemType;
-import ca.montreal.mesmorize.util.DatabaseUtilTest;
+import ca.montreal.mesmorize.util.DatabaseUtil;
 
 /**
  * Testing the Item repository, which saves an item and all of its attributes
@@ -32,7 +30,7 @@ import ca.montreal.mesmorize.util.DatabaseUtilTest;
 public class ItemRepositoryTests {
 
     @Autowired
-    DatabaseUtilTest databaseUtil;
+    DatabaseUtil databaseUtil;
 
     @Autowired
     ItemRepository itemRepository;
@@ -44,7 +42,7 @@ public class ItemRepositoryTests {
      */
 
     @BeforeAll
-    public static void clearDatabaseBefore(@Autowired DatabaseUtilTest databaseUtil) {
+    public static void clearDatabaseBefore(@Autowired DatabaseUtil databaseUtil) {
         databaseUtil.clearDatabase();
     }
 
@@ -55,7 +53,7 @@ public class ItemRepositoryTests {
      */
 
     @AfterEach
-    public void clearDatabaseAfter(@Autowired DatabaseUtilTest databaseUtil) {
+    public void clearDatabaseAfter(@Autowired DatabaseUtil databaseUtil) {
         databaseUtil.clearDatabase();
     }
 
@@ -81,7 +79,7 @@ public class ItemRepositoryTests {
         themes.add(theme);
         Set<PracticeSession> practiceSessions = new HashSet<PracticeSession>();
         Item item = databaseUtil.createAndSaveItem("O Befriended Stranger",
-                "O Befriended Stranger! The candle of thine heart...", Date.from(Instant.now()), ItemType.Song, false,
+                "O Befriended Stranger! The candle of thine heart...", ItemType.Song, false,
                 false, account, themes,practiceSessions,source);
 
         // load the item from the database

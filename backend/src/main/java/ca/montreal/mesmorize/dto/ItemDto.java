@@ -1,108 +1,43 @@
-package ca.montreal.mesmorize.model;
+package ca.montreal.mesmorize.dto;
 
 import java.util.Date;
 import java.util.Set;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import ca.montreal.mesmorize.model.Account;
+import ca.montreal.mesmorize.model.Item;
+import ca.montreal.mesmorize.model.PracticeSession;
+import ca.montreal.mesmorize.model.Source;
+import ca.montreal.mesmorize.model.Theme;
+import ca.montreal.mesmorize.model.Item.ItemType;
 
 /**
- * Item class stores items that the user wants help keeping track of so they can
- * practice them
- * 
- * This may become more sophisticated in the future, but for now there is one
- * class for all items to be memorized
+ * Data Transfer Object for an Item
  */
-@Entity
-public class Item {
+public class ItemDto {
 
-    // -----------
-    // Enumeration
-    // -----------
-    public enum ItemType {
-        Song, Quote, Prayer
-    }
-
-    // -----------
     // Attributes
-    // -----------
 
-    @Id
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid2")
-    private String id;
-
-    @Column(nullable = false, unique = true)
     private String name;
-
-    @Column(nullable = false)
     private String words;
-
-    @Column(nullable = false)
     private Date dateCreated;
-
-    // Can find the date it was last practiced by getting the most recent practice
-    // item associated with it
-    // private Date lastPracticed;
-
-    @Column(nullable = false)
     private ItemType itemType;
-
-    @Column(nullable = false)
     private boolean favorite;
-
-    @Column(nullable = false)
     private boolean learnt;
-
-    // -----------
-    // Associations
-    // -----------
-
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "account_id", nullable = false)
     private Account account;
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "item_theme", joinColumns = @JoinColumn(name = "item_id"), inverseJoinColumns = @JoinColumn(name = "theme_id"))
     private Set<Theme> themes;
-
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "item_id", nullable = true)
     private Set<PracticeSession> practiceSessions;
-
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "source_id", nullable = false)
     private Source source;
 
-    // -----------
     // Constructors
-    // -----------
 
     /**
      * Null constructor
      */
-    public Item() {
+    public ItemDto() {
     }
 
     /**
-     * Constructor to make an Item without an Id
-     * 
+     * Constructor with all attributes
      * @param name
      * @param words
      * @param dateCreated
@@ -115,7 +50,7 @@ public class Item {
      * @param source
      * @author Shidan Javaheri
      */
-    public Item(String name, String words, Date dateCreated, ItemType itemType, boolean favorite, boolean learnt,
+    public ItemDto(String name, String words, Date dateCreated, ItemType itemType, boolean favorite, boolean learnt,
             Account account, Set<Theme> themes, Set<PracticeSession> practiceSessions, Source source) {
         this.name = name;
         this.words = words;
@@ -129,16 +64,22 @@ public class Item {
         this.source = source;
     }
 
-    // -----------
-    // Getters and Setters
-    // -----------
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
+    /**
+     * Constructor that takes in an Item object
+     * @param item
+     * @author Shidan Javaheri
+     */
+    public ItemDto(Item item){
+        this.name = item.getName();
+        this.words = item.getWords();
+        this.dateCreated = item.getDateCreated();
+        this.itemType = item.getItemType();
+        this.favorite = item.isFavorite();
+        this.learnt = item.isLearnt();
+        this.account = item.getAccount();
+        this.themes = item.getThemes();
+        this.practiceSessions = item.getPracticeSessions();
+        this.source = item.getSource();       
     }
 
     public String getName() {
@@ -220,5 +161,10 @@ public class Item {
     public void setSource(Source source) {
         this.source = source;
     }
+
+    
+
+    
+   
 
 }
