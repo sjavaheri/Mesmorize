@@ -1,0 +1,7 @@
+<div class="container">
+    <app-sidebar></app-sidebar>
+    <section class="play-area-container">
+        <app-play-area [color]="colorLeft" class="play-area" tabindex="0"></app-play-area>
+    </section>
+    <app-play-area [color]="'blue'" class="play-area" tabindex="0" (ourEvent)="responseToEvent($event)"></app-play-area>
+</div>
