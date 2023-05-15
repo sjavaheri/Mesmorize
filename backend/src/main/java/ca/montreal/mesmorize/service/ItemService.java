@@ -48,9 +48,10 @@ public class ItemService {
      * @param source
      * @param username
      * @return an {@link Item} object
+     * @author Shidan Javaheri
      */
     public Item createItem(String name, String words, ItemType itemType, boolean favorite,
-            boolean learnt, ArrayList<String> themeIds, Source source, String username) {
+            boolean learnt, Set<String> themeIds, Source source, String username) {
 
         // make sure account doesn't already have another item of same name
         if (itemRepository.findItemByNameAndAccountUsername(name, username) != null) {
@@ -60,6 +61,11 @@ public class ItemService {
         // make sure item name is not more than 100 characters
         if (name.length() > 100) {
             throw new GlobalException(HttpStatus.BAD_REQUEST, "Item name cannot be more than 100 characters");
+        }
+
+        // make sure no input feild is null
+        if (name == null || words == null || itemType == null || username == null ) {
+            throw new GlobalException(HttpStatus.BAD_REQUEST, "One or more input fields are null");
         }
 
         // get themes

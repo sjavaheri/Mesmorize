@@ -1,6 +1,7 @@
 package ca.montreal.mesmorize.dto;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import ca.montreal.mesmorize.model.Account;
@@ -24,7 +25,7 @@ public class ItemDto {
     private boolean favorite;
     private boolean learnt;
     private Account account;
-    private Set<Theme> themes;
+    private Set<String> themeIds;
     private Set<PracticeSession> practiceSessions;
     private Source source;
 
@@ -38,6 +39,7 @@ public class ItemDto {
 
     /**
      * Constructor with all attributes
+     * 
      * @param name
      * @param words
      * @param dateCreated
@@ -51,7 +53,7 @@ public class ItemDto {
      * @author Shidan Javaheri
      */
     public ItemDto(String name, String words, Date dateCreated, ItemType itemType, boolean favorite, boolean learnt,
-            Account account, Set<Theme> themes, Set<PracticeSession> practiceSessions, Source source) {
+            Account account, Set<String> themeIds, Set<PracticeSession> practiceSessions, Source source) {
         this.name = name;
         this.words = words;
         this.dateCreated = dateCreated;
@@ -59,17 +61,18 @@ public class ItemDto {
         this.favorite = favorite;
         this.learnt = learnt;
         this.account = account;
-        this.themes = themes;
+        this.themeIds = themeIds;
         this.practiceSessions = practiceSessions;
         this.source = source;
     }
 
     /**
      * Constructor that takes in an Item object
+     * 
      * @param item
      * @author Shidan Javaheri
      */
-    public ItemDto(Item item){
+    public ItemDto(Item item) {
         this.name = item.getName();
         this.words = item.getWords();
         this.dateCreated = item.getDateCreated();
@@ -77,9 +80,17 @@ public class ItemDto {
         this.favorite = item.isFavorite();
         this.learnt = item.isLearnt();
         this.account = item.getAccount();
-        this.themes = item.getThemes();
+
+        // create theme Ids
+        this.themeIds = new HashSet<String>();
+
+        if (item.getThemes() != null) {
+            for (Theme theme : item.getThemes()) {
+                this.themeIds.add(theme.getId());
+            }
+        }
         this.practiceSessions = item.getPracticeSessions();
-        this.source = item.getSource();       
+        this.source = item.getSource();
     }
 
     public String getName() {
@@ -138,12 +149,12 @@ public class ItemDto {
         this.account = account;
     }
 
-    public Set<Theme> getThemes() {
-        return themes;
+    public Set<String> getThemeIds() {
+        return themeIds;
     }
 
-    public void setThemes(Set<Theme> themes) {
-        this.themes = themes;
+    public void setThemes(Set<String> themeIds) {
+        this.themeIds = themeIds;
     }
 
     public Set<PracticeSession> getPracticeSessions() {
@@ -161,10 +172,5 @@ public class ItemDto {
     public void setSource(Source source) {
         this.source = source;
     }
-
-    
-
-    
-   
 
 }
