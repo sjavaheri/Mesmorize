@@ -148,7 +148,7 @@ public class ItemDto {
         return username;
     }
 
-    public void setAccount(String username) {
+    public void setUsername(String username) {
         this.username = username;
     }
 
@@ -175,5 +175,14 @@ public class ItemDto {
     public void setSource(Source source) {
         this.source = source;
     }
+
+    public Date getDateLastRevised() {
+        return dateLastRevised;
+    }
+
+    public void setDateLastRevised(Date dateLastRevised) {
+        this.dateLastRevised = dateLastRevised;
+    }
+    
 
 }

@@ -1,6 +1,7 @@
 package ca.montreal.mesmorize.controller;
 
 import ca.montreal.mesmorize.configuration.Authority;
+import ca.montreal.mesmorize.dao.SourceRepository;
 import ca.montreal.mesmorize.dto.ItemDto;
 import ca.montreal.mesmorize.exception.GlobalException;
 import ca.montreal.mesmorize.model.Account;
@@ -28,6 +29,10 @@ public class DemoController {
 
   @Autowired
   private DatabaseUtil databaseUtil;
+
+  @Autowired
+  private SourceRepository sourceRepository;
+
   /**
    * Method to demonstrate how to restrict access to an endpoint
    *
@@ -65,11 +70,18 @@ public class DemoController {
   @PreAuthorize("hasAuthority('User')")
   public ResponseEntity<ItemDto> showDto() {
 
+    Source source = new Source();
+    
     // create and save a source with all of its properties
-    Source source = databaseUtil.createAndSaveSource("Book 1", "Arising To Serve", "Ruhi Institute");
+    if (sourceRepository.findSourceByTitle("Book 1") == null) {
+      source = databaseUtil.createAndSaveSource("Book 1", "Arising To Serve", "Ruhi Institute");
+    } else { 
+      source = sourceRepository.findSourceByTitle("Book 1");
+    }
 
     Account validAccount = new Account("Test1", "Lastname", "test1@gmail.com", "a Cool password1", Authority.User);
-    Item item = new Item("Hello", "It's Me", Date.from(Instant.now()),Date.from(Instant.now()), ItemType.Prayer, false, true,
+    Item item = new Item("Hello", "It's Me", Date.from(Instant.now()), Date.from(Instant.now()), ItemType.Prayer, false,
+        true,
         validAccount, null, null, source);
 
     return new ResponseEntity<ItemDto>(new ItemDto(item), HttpStatus.OK);
