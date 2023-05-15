@@ -85,9 +85,9 @@ public class Item {
     @JoinColumn(name = "item_id", nullable = true)
     private Set<PracticeSession> practiceSessions;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "source_id", nullable = false)
+    @JoinColumn(name = "source_id", nullable = true)
     private Source source;
 
     // -----------

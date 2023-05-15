@@ -101,7 +101,9 @@ public class DatabaseUtil {
         item.setAccount(account);
         item.setThemes(themes);
         item.setPracticeSessions(practiceSessions);
-        item.setSource(source);
+        if (source != null) {
+            item.setSource(source);
+        }
         itemRepository.save(item);
         return item;
     }

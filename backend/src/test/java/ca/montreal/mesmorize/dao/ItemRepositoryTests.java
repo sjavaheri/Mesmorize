@@ -57,7 +57,7 @@ public class ItemRepositoryTests {
         databaseUtil.clearDatabase();
     }
 
-    /** 
+    /**
      * Test persisting and loading an item
      * 
      * @author Shidan Javaheri
@@ -80,7 +80,39 @@ public class ItemRepositoryTests {
         Set<PracticeSession> practiceSessions = new HashSet<PracticeSession>();
         Item item = databaseUtil.createAndSaveItem("O Befriended Stranger",
                 "O Befriended Stranger! The candle of thine heart...", ItemType.Song, false,
-                false, account, themes,practiceSessions,source);
+                false, account, themes, practiceSessions, source);
+
+        // load the item from the database
+        Item loadedItem = itemRepository.findItemByName("O Befriended Stranger");
+
+        // assert that the loaded item is the same as the saved item
+        assertNotNull(loadedItem.getId(), "The loaded item's id should not be null");
+        assertEquals(item.getName(), loadedItem.getName());
+        assertEquals(item.getWords(), loadedItem.getWords());
+        assertEquals(item.getDateCreated(), loadedItem.getDateCreated());
+        assertEquals(item.getItemType(), loadedItem.getItemType());
+        assertEquals(item.getAccount().getUsername(), loadedItem.getAccount().getUsername());
+
+    }
+
+    /**
+     * Test persisting and loading an item with no themes or source
+     * 
+     * @author Shidan Javaheri
+     */
+    @Test
+    public void testPersistAndLoadItemNoThemesOrSource() {
+
+        // create and save the account with all of its properties
+        Account account = databaseUtil.createAndSaveAccount("Mo", "Salah", "mo.salah@gmail.com", "password");
+
+
+        // create and save an Item with all of its properties
+        Set<Theme> themes = new HashSet<Theme>();
+        Set<PracticeSession> practiceSessions = new HashSet<PracticeSession>();
+        Item item = databaseUtil.createAndSaveItem("O Befriended Stranger",
+                "O Befriended Stranger! The candle of thine heart...", ItemType.Song, false,
+                false, account, null, practiceSessions, null);
 
         // load the item from the database
         Item loadedItem = itemRepository.findItemByName("O Befriended Stranger");
@@ -96,3 +128,5 @@ public class ItemRepositoryTests {
     }
 
 }
+
+
