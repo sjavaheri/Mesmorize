@@ -71,7 +71,7 @@ public class TestItemService {
         this.themes = new HashSet<Theme>();
         this.practiceSessions = new HashSet<PracticeSession>();
         this.validAccount = new Account("Test1", "Lastname", "test1@gmail.com", "a Cool password1", Authority.User);
-        this.validItem = new Item("Hello", "It's Me", Date.from(Instant.now()), ItemType.Prayer, false, true,
+        this.validItem = new Item("Hello", "It's Me", Date.from(Instant.now()),Date.from(Instant.now()), ItemType.Prayer, false, true,
                 validAccount, themes, practiceSessions, null);
     }
 

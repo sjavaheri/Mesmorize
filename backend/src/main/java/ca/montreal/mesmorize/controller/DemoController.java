@@ -69,7 +69,7 @@ public class DemoController {
     Source source = databaseUtil.createAndSaveSource("Book 1", "Arising To Serve", "Ruhi Institute");
 
     Account validAccount = new Account("Test1", "Lastname", "test1@gmail.com", "a Cool password1", Authority.User);
-    Item item = new Item("Hello", "It's Me", Date.from(Instant.now()), ItemType.Prayer, false, true,
+    Item item = new Item("Hello", "It's Me", Date.from(Instant.now()),Date.from(Instant.now()), ItemType.Prayer, false, true,
         validAccount, null, null, source);
 
     return new ResponseEntity<ItemDto>(new ItemDto(item), HttpStatus.OK);
