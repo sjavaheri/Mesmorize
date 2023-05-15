@@ -1,5 +1,6 @@
 package ca.montreal.mesmorize.util;
 
+import java.time.Instant;
 import java.util.Date;
 import java.util.Set;
 
@@ -88,19 +89,22 @@ public class DatabaseUtil {
      * @return the {@link Item object} right before being saved
      * @author Shidan Javaheri
      */
-    public Item createAndSaveItem(String name, String words, Date dateCreated, ItemType itemType, boolean favorite,
+    public Item createAndSaveItem(String name, String words, ItemType itemType, boolean favorite,
             boolean learnt, Account account, Set<Theme> themes, Set<PracticeSession> practiceSessions, Source source) {
         Item item = new Item();
         item.setName(name);
         item.setWords(words);
-        item.setDateCreated(dateCreated);
+        item.setDateCreated(Date.from(Instant.now()));
+        item.setDateLastRevised(Date.from(Instant.now()));
         item.setItemType(itemType);
         item.setFavorite(favorite);
         item.setLearnt(learnt);
         item.setAccount(account);
         item.setThemes(themes);
         item.setPracticeSessions(practiceSessions);
-        item.setSource(source);
+        if (source != null) {
+            item.setSource(source);
+        }
         itemRepository.save(item);
         return item;
     }

@@ -7,9 +7,10 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import ca.montreal.mesmorize.configuration.Authority;
 import ca.montreal.mesmorize.dao.AccountRepository;
+import ca.montreal.mesmorize.dao.ThemeRepository;
 import ca.montreal.mesmorize.model.Account;
+import ca.montreal.mesmorize.util.DatabaseUtil;
 
 @SpringBootApplication
 public class MesmorizeApplication {
@@ -26,37 +27,90 @@ public class MesmorizeApplication {
 	 * @author Shidan Javaheri
 	 */
 	@Bean
-	public CommandLineRunner commandLineRunner(AccountRepository accountRepository, PasswordEncoder passwordEncoder) {
+	public CommandLineRunner commandLineRunner(AccountRepository accountRepository, PasswordEncoder passwordEncoder,
+			ThemeRepository themeRepository, DatabaseUtil databaseUtil) {
 		return args -> {
 
 			/** Account Creation at BootStrap */
 			if (accountRepository.findAccountByUsername("shidan.javaheri@mail.mcgill.ca") == null) {
-				Account account = new Account();
-				account.setUsername("shidan.javaheri@mail.mcgill.ca");
-				// encode the password
-				String encoded = passwordEncoder.encode("Password01");
-				account.setPassword(encoded);
-				account.setFirstname("Shidan");
-				account.setLastname("Javaheri");
-				account.getAuthorities().add(Authority.Admin);
-				accountRepository.save(account);
-			};
+				databaseUtil.createAndSaveAccount("Shidan", "Javaheri","shidan.javaheri@mail.mcgill.ca", "Password01");
+			}
+			;
 
 			/** Account Creation at BootStrap for Frontend Server */
 			if (accountRepository.findAccountByUsername("server@local.com") == null) {
-				Account account = new Account();
-				account.setUsername("server@local.com");
-				// encode the password
-				String encoded = passwordEncoder.encode("ajsdhfqoew134509lasdfq3452k2345hk34jb523j46kj7456j745j6b2456jb");
-				account.setPassword(encoded);
-				account.setFirstname("Server");
-				account.setLastname("Local");
-				account.getAuthorities().add(Authority.Server);
-				accountRepository.save(account);
-			};
+				databaseUtil.createAndSaveAccount("Server", "Local","server@local.com", "ka;sp3ru3134i5230;sldjfkpq093481u345klj093845askdjfp");
+			}
+			;
+
+			/** Theme Creation at BootStrap */
+			Account serverAccount = accountRepository.findAccountByUsername("server@local.com"); 
+			// Themes that may be used for Prayers and Quotations
+
+			// Aid and Assitance
+			if (themeRepository.findThemeByNameAndAccountUsername("Aid and Assistance", "server@local.com") == null) {
+				databaseUtil.createAndSaveTheme("Aid and Assistance", serverAccount);
+			}
+
+			// Children
+			if (themeRepository.findThemeByNameAndAccountUsername("Children", "server@local.com") == null) {
+				databaseUtil.createAndSaveTheme("Children", serverAccount);
+			}
+
+			// Detachment
+			if (themeRepository.findThemeByNameAndAccountUsername("Detachment", "server@local.com") == null) {
+				databaseUtil.createAndSaveTheme("Detachment", serverAccount);
+			}
+
+			// Youth 
+			if (themeRepository.findThemeByNameAndAccountUsername("Youth", "server@local.com") == null) {
+				databaseUtil.createAndSaveTheme("Youth", serverAccount);
+			}
+
+			// Joy
+			if (themeRepository.findThemeByNameAndAccountUsername("Joy", "server@local.com") == null) {
+				databaseUtil.createAndSaveTheme("Joy", serverAccount);
+			}
+
+			// Love	
+			if (themeRepository.findThemeByNameAndAccountUsername("Love", "server@local.com") == null) {
+				databaseUtil.createAndSaveTheme("Love", serverAccount);
+			}
+
+			// Prayer
+			if (themeRepository.findThemeByNameAndAccountUsername("Prayer", "server@local.com") == null) {
+				databaseUtil.createAndSaveTheme("Prayer", serverAccount);
+			}
+
+			// Tests and Difficulties
+			if (themeRepository.findThemeByNameAndAccountUsername("Tests and Difficulties", "server@local.com") == null) {
+				databaseUtil.createAndSaveTheme("Tests and Difficulties", serverAccount);
+			}
+
+			// Consultation
+			if (themeRepository.findThemeByNameAndAccountUsername("Consultation", "server@local.com") == null) {
+				databaseUtil.createAndSaveTheme("Consultation", serverAccount);
+			}
+
+			// Praise and Gratitude
+			if (themeRepository.findThemeByNameAndAccountUsername("Praise and Gratitude", "server@local.com") == null) {
+				databaseUtil.createAndSaveTheme("Praise and Gratitude", serverAccount);
+			}
+
+			// Unity
+			if (themeRepository.findThemeByNameAndAccountUsername("Unity", "server@local.com") == null) {
+				databaseUtil.createAndSaveTheme("Unity", serverAccount);
+			}
+
+			// Should we include the Units of Each Book? 
+
+			// The units of Reflections on the Life of the Spirit: Book 1
+
+			// 
 
 
 
+			
 
 		};
 	}

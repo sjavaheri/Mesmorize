@@ -24,8 +24,15 @@ public interface ItemRepository extends CrudRepository<Item, String> {
      */
     
     Item findItemByName(String name);
-    
 
+    /**
+     * Find an item by its unique name and account username
+     * @param name
+     * @param username
+     * @return the item with the given name and account username
+     */
+    Item findItemByNameAndAccountUsername(String name, String username);
+    
 
 }
 

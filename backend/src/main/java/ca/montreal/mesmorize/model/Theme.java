@@ -35,7 +35,7 @@ public class Theme {
     // ------------
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "account_id")
+    @JoinColumn(name = "account_id", nullable = false)
     private Account account;
 
     // -----------
@@ -65,6 +65,5 @@ public class Theme {
     public void setAccount(Account account) {
         this.account = account;
     }
-    
 
 }

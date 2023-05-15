@@ -54,6 +54,9 @@ public class Item {
     @Column(nullable = false)
     private Date dateCreated;
 
+    @Column(nullable = false)
+    private Date dateLastRevised;
+
     // Can find the date it was last practiced by getting the most recent practice
     // item associated with it
     // private Date lastPracticed;
@@ -85,16 +88,57 @@ public class Item {
     @JoinColumn(name = "item_id", nullable = true)
     private Set<PracticeSession> practiceSessions;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "source_id", nullable = false)
+    @JoinColumn(name = "source_id", nullable = true)
     private Source source;
+
+    // -----------
+    // Constructors
+    // -----------
+
+    /**
+     * Null constructor
+     */
+    public Item() {
+    }
+
+    /**
+     * Constructor to make an Item without an Id
+     * 
+     * @param name
+     * @param words
+     * @param dateCreated
+     * @param dateLastRevised
+     * @param itemType
+     * @param favorite
+     * @param learnt
+     * @param account
+     * @param themes
+     * @param practiceSessions
+     * @param source
+     * @author Shidan Javaheri
+     */
+    public Item(String name, String words, Date dateCreated, Date dateLastRevised, ItemType itemType, boolean favorite,
+            boolean learnt,
+            Account account, Set<Theme> themes, Set<PracticeSession> practiceSessions, Source source) {
+        this.name = name;
+        this.words = words;
+        this.dateCreated = dateCreated;
+        this.dateLastRevised = dateLastRevised;
+        this.itemType = itemType;
+        this.favorite = favorite;
+        this.learnt = learnt;
+        this.account = account;
+        this.themes = themes;
+        this.practiceSessions = practiceSessions;
+        this.source = source;
+    }
 
     // -----------
     // Getters and Setters
     // -----------
 
-    
     public String getId() {
         return id;
     }
@@ -183,6 +227,12 @@ public class Item {
         this.source = source;
     }
 
+    public Date getDateLastRevised() {
+        return dateLastRevised;
+    }
 
+    public void setDateLastRevised(Date dateLastRevised) {
+        this.dateLastRevised = dateLastRevised;
+    }
 
 }
