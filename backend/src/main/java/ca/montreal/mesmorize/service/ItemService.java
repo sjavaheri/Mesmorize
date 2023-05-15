@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import ca.montreal.mesmorize.dao.AccountRepository;
 import ca.montreal.mesmorize.dao.ItemRepository;
+import ca.montreal.mesmorize.dao.SourceRepository;
 import ca.montreal.mesmorize.dao.ThemeRepository;
 import ca.montreal.mesmorize.exception.GlobalException;
 import ca.montreal.mesmorize.model.Item;
@@ -32,6 +33,9 @@ public class ItemService {
 
     @Autowired
     private ThemeRepository themeRepository;
+
+    @Autowired
+    private SourceRepository sourceRepository;
 
     @Autowired
     private AccountRepository accountRepository;
@@ -58,13 +62,20 @@ public class ItemService {
             throw new GlobalException(HttpStatus.BAD_REQUEST, "An Item with this name already exists");
         }
 
+        // check if the source exists, if not create a new one
+        if (source != null) {
+            if (sourceRepository.findSourceByTitle(source.getTitle()) == null) {
+                sourceRepository.save(source);
+            }
+        }
+
         // make sure item name is not more than 100 characters
         if (name.length() > 100) {
             throw new GlobalException(HttpStatus.BAD_REQUEST, "Item name cannot be more than 100 characters");
         }
 
         // make sure no input feild is null
-        if (name == null || words == null || itemType == null || username == null ) {
+        if (name == null || words == null || itemType == null || username == null) {
             throw new GlobalException(HttpStatus.BAD_REQUEST, "One or more input fields are null");
         }
 

@@ -54,6 +54,9 @@ public class Item {
     @Column(nullable = false)
     private Date dateCreated;
 
+    @Column(nullable = false)
+    private Date dateLastRevised;
+
     // Can find the date it was last practiced by getting the most recent practice
     // item associated with it
     // private Date lastPracticed;
@@ -106,6 +109,7 @@ public class Item {
      * @param name
      * @param words
      * @param dateCreated
+     * @param dateLastRevised
      * @param itemType
      * @param favorite
      * @param learnt
@@ -115,11 +119,13 @@ public class Item {
      * @param source
      * @author Shidan Javaheri
      */
-    public Item(String name, String words, Date dateCreated, ItemType itemType, boolean favorite, boolean learnt,
+    public Item(String name, String words, Date dateCreated, Date dateLastRevised, ItemType itemType, boolean favorite,
+            boolean learnt,
             Account account, Set<Theme> themes, Set<PracticeSession> practiceSessions, Source source) {
         this.name = name;
         this.words = words;
         this.dateCreated = dateCreated;
+        this.dateLastRevised = dateLastRevised;
         this.itemType = itemType;
         this.favorite = favorite;
         this.learnt = learnt;
@@ -219,6 +225,14 @@ public class Item {
 
     public void setSource(Source source) {
         this.source = source;
+    }
+
+    public Date getDateLastRevised() {
+        return dateLastRevised;
+    }
+
+    public void setDateLastRevised(Date dateLastRevised) {
+        this.dateLastRevised = dateLastRevised;
     }
 
 }

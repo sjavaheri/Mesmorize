@@ -1,15 +1,19 @@
 package ca.montreal.mesmorize.controller;
 
 import ca.montreal.mesmorize.configuration.Authority;
+import ca.montreal.mesmorize.dao.SourceRepository;
 import ca.montreal.mesmorize.dto.ItemDto;
 import ca.montreal.mesmorize.exception.GlobalException;
 import ca.montreal.mesmorize.model.Account;
 import ca.montreal.mesmorize.model.Item;
+import ca.montreal.mesmorize.model.Source;
 import ca.montreal.mesmorize.model.Item.ItemType;
+import ca.montreal.mesmorize.util.DatabaseUtil;
 
 import java.sql.Date;
 import java.time.Instant;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,6 +26,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping({ "/demo", "/demo/" })
 public class DemoController {
+
+  @Autowired
+  private DatabaseUtil databaseUtil;
+
+  @Autowired
+  private SourceRepository sourceRepository;
 
   /**
    * Method to demonstrate how to restrict access to an endpoint
@@ -60,10 +70,20 @@ public class DemoController {
   @PreAuthorize("hasAuthority('User')")
   public ResponseEntity<ItemDto> showDto() {
 
+    Source source = new Source();
+    
+    // create and save a source with all of its properties
+    if (sourceRepository.findSourceByTitle("Book 1") == null) {
+      source = databaseUtil.createAndSaveSource("Book 1", "Arising To Serve", "Ruhi Institute");
+    } else { 
+      source = sourceRepository.findSourceByTitle("Book 1");
+    }
+
     Account validAccount = new Account("Test1", "Lastname", "test1@gmail.com", "a Cool password1", Authority.User);
-    Item item = new Item("Hello", "It's Me", Date.from(Instant.now()), ItemType.Prayer, false, true,
-                validAccount, null, null, null);
-                
+    Item item = new Item("Hello", "It's Me", Date.from(Instant.now()), Date.from(Instant.now()), ItemType.Prayer, false,
+        true,
+        validAccount, null, null, source);
+
     return new ResponseEntity<ItemDto>(new ItemDto(item), HttpStatus.OK);
   }
 }

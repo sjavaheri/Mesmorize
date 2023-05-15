@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import ca.montreal.mesmorize.model.Account;
 import ca.montreal.mesmorize.model.Item;
 import ca.montreal.mesmorize.model.PracticeSession;
 import ca.montreal.mesmorize.model.Source;
@@ -21,10 +20,11 @@ public class ItemDto {
     private String name;
     private String words;
     private Date dateCreated;
+    private Date dateLastRevised;
     private ItemType itemType;
     private boolean favorite;
     private boolean learnt;
-    private Account account;
+    private String username; 
     private Set<String> themeIds;
     private Set<PracticeSession> practiceSessions;
     private Source source;
@@ -43,6 +43,7 @@ public class ItemDto {
      * @param name
      * @param words
      * @param dateCreated
+     * @param dateLastRevised
      * @param itemType
      * @param favorite
      * @param learnt
@@ -52,15 +53,16 @@ public class ItemDto {
      * @param source
      * @author Shidan Javaheri
      */
-    public ItemDto(String name, String words, Date dateCreated, ItemType itemType, boolean favorite, boolean learnt,
-            Account account, Set<String> themeIds, Set<PracticeSession> practiceSessions, Source source) {
+    public ItemDto(String name, String words, Date dateCreated, Date dateLastRevised, ItemType itemType, boolean favorite, boolean learnt,
+            String username, Set<String> themeIds, Set<PracticeSession> practiceSessions, Source source) {
         this.name = name;
         this.words = words;
         this.dateCreated = dateCreated;
+        this.dateLastRevised = dateLastRevised;
         this.itemType = itemType;
         this.favorite = favorite;
         this.learnt = learnt;
-        this.account = account;
+        this.username = username;
         this.themeIds = themeIds;
         this.practiceSessions = practiceSessions;
         this.source = source;
@@ -76,10 +78,11 @@ public class ItemDto {
         this.name = item.getName();
         this.words = item.getWords();
         this.dateCreated = item.getDateCreated();
+        this.dateLastRevised = item.getDateLastRevised();
         this.itemType = item.getItemType();
         this.favorite = item.isFavorite();
         this.learnt = item.isLearnt();
-        this.account = item.getAccount();
+        this.username = item.getAccount().getUsername();
 
         // create theme Ids
         this.themeIds = new HashSet<String>();
@@ -141,12 +144,12 @@ public class ItemDto {
         this.learnt = learnt;
     }
 
-    public Account getAccount() {
-        return account;
+    public String getUsername() {
+        return username;
     }
 
-    public void setAccount(Account account) {
-        this.account = account;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public Set<String> getThemeIds() {
@@ -172,5 +175,14 @@ public class ItemDto {
     public void setSource(Source source) {
         this.source = source;
     }
+
+    public Date getDateLastRevised() {
+        return dateLastRevised;
+    }
+
+    public void setDateLastRevised(Date dateLastRevised) {
+        this.dateLastRevised = dateLastRevised;
+    }
+    
 
 }

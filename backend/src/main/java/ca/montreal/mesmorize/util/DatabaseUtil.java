@@ -95,6 +95,7 @@ public class DatabaseUtil {
         item.setName(name);
         item.setWords(words);
         item.setDateCreated(Date.from(Instant.now()));
+        item.setDateLastRevised(Date.from(Instant.now()));
         item.setItemType(itemType);
         item.setFavorite(favorite);
         item.setLearnt(learnt);
