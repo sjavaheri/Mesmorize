@@ -21,6 +21,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import ca.montreal.mesmorize.configuration.Authority;
 import ca.montreal.mesmorize.dao.AccountRepository;
 import ca.montreal.mesmorize.dao.ItemRepository;
+import ca.montreal.mesmorize.dao.SourceRepository;
 import ca.montreal.mesmorize.dao.ThemeRepository;
 import ca.montreal.mesmorize.model.Account;
 import ca.montreal.mesmorize.model.Item;
@@ -46,6 +47,8 @@ public class TestItemService {
 
     @Mock
     private AccountRepository accountRepository;
+
+    @Mock SourceRepository sourceRepository;
 
     @Mock
     private ThemeRepository themeRepository;
@@ -83,6 +86,7 @@ public class TestItemService {
         // setup mocks
         // no need to mock itemRepository because we want it to return null
         when(accountRepository.findAccountByUsername("test1@gmail.com")).thenAnswer((InvocationOnMock invocation) -> validAccount); 
+        lenient().when(sourceRepository.findSourceByTitle(any(String.class))).thenAnswer((InvocationOnMock invocation) -> null); 
         lenient().when(databaseUtil.createAndSaveItem(any(String.class), any(String.class), any(ItemType.class), any(Boolean.class), any(Boolean.class), any(Account.class),any(), any(), any())).thenAnswer((InvocationOnMock invocation) -> validItem); 
 
         // call method
