@@ -43,7 +43,7 @@ public class AccountDto {
      * Converts a Account to a AccountDto
      *
      * @param account - the Account to be converted
-     * @return the converted AccountDto
+     * @return the converted AccountDto with nothing in the password feild
      * @author Shidan Javaheri
      */
     public AccountDto(Account account) {
@@ -53,7 +53,6 @@ public class AccountDto {
         // Convert Account to AccountDto
         this.id = account.getId();
         this.username = account.getUsername();
-        this.password = account.getPassword();
         this.firstname = account.getFirstname();
         this.lastname = account.getLastname();
     }

@@ -5,6 +5,7 @@ import { Observable, firstValueFrom, of } from "rxjs";
 import { catchError } from "rxjs/operators";
 import { environment } from "src/environments/environment";
 import jwt_decode from "jwt-decode";
+import { existsSync } from "fs";
 
 /**
  * Class to send Http Requests to the backend with the JWT token taken as a cookie
@@ -68,6 +69,7 @@ export class CommunicationService {
 
   /**
    * Function to set or delete the token as a cookie
+   * Deletes the cookie if the input is an empty string
    * @param token
    * @author Shidan Javaheri + credit ChatGPT + ECSE 428 Group Project
    */
@@ -123,7 +125,7 @@ export class CommunicationService {
    * Method to logout a user by clearing local storage.
    */
   private logout(): void {
-    localStorage.removeItem("appUser");
+    localStorage.removeItem("account");
     // Call the setTokenCookie function from your code or module
     this.setTokenCookie("");
   }
@@ -168,29 +170,30 @@ export class CommunicationService {
 
   /**
    * Method to verify the validity of a token.
-   * @returns true if token is valid, false otherwise
+   * @returns accountDTO if valid, nothing otherwise
    */
   async verifyToken(): Promise<boolean> {
-    localStorage.removeItem("appUser");
+    localStorage.removeItem("account");
     const token = this.getTokenCookie();
     // Check if there is a token
     if (!token) return false;
-    
+
     // send a get request to the login endpoint
-    const res = await this.login;
-    if (res == false) {
+    const res = await firstValueFrom(this.basicGet("/login"));
+
+    if (!res) {
       this.logout();
       if (window.location.pathname !== "/login") {
         window.location.href = "/login";
       }
       return false;
     }
-    const appUserDTO = await res.json();
+    const accountDTO = JSON.parse(res.body);
     // Problem with the request
-    if (!appUserDTO) return false;
+    if (!accountDTO) return false;
     // Populate local storage with user info
     // Use JSON.parse() to convert string into object in other files
-    localStorage.setItem("appUser", JSON.stringify(appUserDTO));
+    localStorage.setItem("account", JSON.stringify(accountDTO));
     return true;
   }
 }
