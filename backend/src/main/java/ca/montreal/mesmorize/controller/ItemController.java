@@ -1,5 +1,6 @@
 package ca.montreal.mesmorize.controller;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,13 +8,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import ca.montreal.mesmorize.dto.FilterDto;
 import ca.montreal.mesmorize.dto.ItemDto;
 import ca.montreal.mesmorize.exception.GlobalException;
+import ca.montreal.mesmorize.model.Item;
 import ca.montreal.mesmorize.model.Source;
 import ca.montreal.mesmorize.model.Item.ItemType;
 import ca.montreal.mesmorize.service.ItemService;
@@ -61,6 +65,35 @@ public class ItemController {
                 itemService.createItem(name, words, itemType, favorite, learnt, themeIds, source, username));
 
         return new ResponseEntity<ItemDto>(newItemDto, HttpStatus.CREATED);
+
+    }
+
+    @GetMapping
+    @PreAuthorize("hasAuthority('User')")
+    public ResponseEntity<ArrayList<ItemDto>> filterItems(@RequestBody FilterDto filterDto){
+        // unpack Dto if it is not null
+        if (filterDto == null) {
+            throw new GlobalException(HttpStatus.BAD_REQUEST, "The filter dto is null");
+        }
+        // get attributes 
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        String name = filterDto.getName();
+        String words = filterDto.getWords();
+        String themeName = filterDto.getThemeName();
+        ItemType itemType = filterDto.getItemType();
+        Boolean favorite = filterDto.getFavorite();
+
+        // call service 
+        ArrayList<Item> items = itemService.filterItems(name, itemType, themeName, words, favorite, username);
+
+        // create DTOs
+        ArrayList<ItemDto> itemDtos = new ArrayList<ItemDto>();
+        for (Item item : items) {
+            itemDtos.add(new ItemDto(item));
+        }
+        // return a response entity with the DTOs
+        return new ResponseEntity<ArrayList<ItemDto>>(itemDtos, HttpStatus.OK);
+
 
     }
 
