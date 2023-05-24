@@ -1,6 +1,10 @@
 package ca.montreal.mesmorize.service;
 
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -102,7 +106,9 @@ public class ItemService {
     }
 
     /**
-     * Filter items in the database. Name, Itemtype, Theme, Words and Boolean are optional 
+     * Filter items in the database. Name, Itemtype, Theme, Words and Boolean are
+     * optional
+     * 
      * @param name
      * @param itemType
      * @param themeName
@@ -186,6 +192,58 @@ public class ItemService {
         }
 
         return items;
+    }
+
+    /**
+     * Method to be recommended an item based on what you haven't said in the
+     * longest time
+     * 
+     * @param username
+     * @param themeName
+     * @return
+     */
+    @Transactional
+    public Item recommendItem(String username, String themeName) {
+
+        // find all items this user has
+        ArrayList<Item> items = itemRepository.findItemByAccountUsername(username);
+        ArrayList<Item> filteredItems = new ArrayList<Item>();
+        // recommend by theme
+        if (!themeName.equals("")) {
+            for (Item item : items) {
+                for (Theme theme : item.getThemes()) {
+                    if (theme.getName().equalsIgnoreCase(themeName)) {
+                        filteredItems.add(item);
+                    }
+                }
+            }
+        } else { 
+            System.out.println("here");
+            filteredItems = items;
+        }
+
+        // recommend by oldest date last visited for now
+        Collections.sort(filteredItems, new Comparator<Item>() {
+            @Override
+            public int compare(Item item1, Item item2) {
+                Date date1 = item1.getDateLastRevised();
+                Date date2 = item2.getDateLastRevised();
+                return date2.compareTo(date1);
+
+            }
+        });
+
+        // return the first item in the list
+        if (filteredItems.size() == 0) {
+            return null;
+        }
+
+        Item selectedItem = filteredItems.get(filteredItems.size() - 1);
+        
+        // update the revisited time on this item
+        selectedItem.setDateLastRevised(Date.from(Instant.now()));
+        itemRepository.save(selectedItem);
+        return selectedItem;
     }
 
 }

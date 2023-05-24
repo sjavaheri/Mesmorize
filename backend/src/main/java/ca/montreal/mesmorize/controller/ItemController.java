@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ca.montreal.mesmorize.dto.FilterDto;
@@ -94,7 +95,20 @@ public class ItemController {
         // return a response entity with the DTOs
         return new ResponseEntity<ArrayList<ItemDto>>(itemDtos, HttpStatus.OK);
 
-
     }
+
+    @GetMapping({"/recommend", "/recommend/"})
+    @PreAuthorize("hasAuthority('User')")
+    public ResponseEntity<Item> recommendItem(@RequestParam String theme) {
+        // get the username of the logged in user
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        // call service
+        Item item = itemService.recommendItem(username, theme);
+
+        // return a response entity with the item
+        return new ResponseEntity<Item>(item, HttpStatus.OK);
+    }
+
 
 }
