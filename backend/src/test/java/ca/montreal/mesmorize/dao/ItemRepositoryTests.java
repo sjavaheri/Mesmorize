@@ -83,7 +83,7 @@ public class ItemRepositoryTests {
                 false, account, themes, practiceSessions, source);
 
         // load the item from the database
-        Item loadedItem = itemRepository.findItemByName("O Befriended Stranger");
+        Item loadedItem = itemRepository.findItemByNameAndAccountUsername("O Befriended Stranger", "mo.salah@gmail.com");
 
         // assert that the loaded item is the same as the saved item
         assertNotNull(loadedItem.getId(), "The loaded item's id should not be null");
@@ -115,7 +115,7 @@ public class ItemRepositoryTests {
                 false, account, null, practiceSessions, null);
 
         // load the item from the database
-        Item loadedItem = itemRepository.findItemByName("O Befriended Stranger");
+        Item loadedItem = itemRepository.findItemByNameAndAccountUsername("O Befriended Stranger", "mo.salah@gmail.com");
 
         // assert that the loaded item is the same as the saved item
         assertNotNull(loadedItem.getId(), "The loaded item's id should not be null");

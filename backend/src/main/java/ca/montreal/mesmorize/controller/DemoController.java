@@ -2,7 +2,7 @@ package ca.montreal.mesmorize.controller;
 
 import ca.montreal.mesmorize.configuration.Authority;
 import ca.montreal.mesmorize.dao.SourceRepository;
-import ca.montreal.mesmorize.dto.ItemDto;
+import ca.montreal.mesmorize.dto.FilterDto;
 import ca.montreal.mesmorize.exception.GlobalException;
 import ca.montreal.mesmorize.model.Account;
 import ca.montreal.mesmorize.model.Item;
@@ -68,7 +68,7 @@ public class DemoController {
    */
   @PostMapping
   @PreAuthorize("hasAuthority('User')")
-  public ResponseEntity<ItemDto> showDto() {
+  public ResponseEntity<FilterDto> showDto() {
 
     Source source = new Source();
     
@@ -84,6 +84,6 @@ public class DemoController {
         true,
         validAccount, null, null, source);
 
-    return new ResponseEntity<ItemDto>(new ItemDto(item), HttpStatus.OK);
+    return new ResponseEntity<FilterDto>(new FilterDto(), HttpStatus.OK);
   }
 }

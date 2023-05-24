@@ -125,7 +125,7 @@ public class SimpleRepositoryTests {
                 false, account, themes, practiceSessions, source);
 
         // get the item
-        Item item = itemRepository.findItemByName("O Befriended Stranger");
+        Item item = itemRepository.findItemByNameAndAccountUsername("O Befriended Stranger", "mo.salah@gmail.com");
 
         // create and save a practice session with all of its properties
         PracticeSession practiceSession = databaseUtil.createAndSavePracticeSession(Date.from(Instant.now()), 10, item);
