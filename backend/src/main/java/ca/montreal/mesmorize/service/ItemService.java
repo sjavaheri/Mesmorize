@@ -1,5 +1,6 @@
 package ca.montreal.mesmorize.service;
 
+import java.security.SecureRandom;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -203,11 +204,12 @@ public class ItemService {
      * @return
      */
     @Transactional
-    public Item recommendItem(String username, String themeName) {
+    public Item recommendItem(String username, String themeName, ItemType itemType) {
 
         // find all items this user has
         ArrayList<Item> items = itemRepository.findItemByAccountUsername(username);
         ArrayList<Item> filteredItems = new ArrayList<Item>();
+
         // recommend by theme
         if (!themeName.equals("")) {
             for (Item item : items) {
@@ -222,7 +224,18 @@ public class ItemService {
             filteredItems = items;
         }
 
-        // recommend by oldest date last visited for now
+        // reccomend by itemType
+        if (itemType != null) {
+            ArrayList<Item> temp = new ArrayList<Item>();
+            for (Item item : filteredItems) {
+                if (item.getItemType().equals(itemType)) {
+                    temp.add(item);
+                }
+            }
+            filteredItems = temp;
+        }
+
+        // sort items by oldest revisited time (last item in the list is the oldest)
         Collections.sort(filteredItems, new Comparator<Item>() {
             @Override
             public int compare(Item item1, Item item2) {
@@ -233,13 +246,34 @@ public class ItemService {
             }
         });
 
-        // return the first item in the list
-        if (filteredItems.size() == 0) {
-            return null;
+        ArrayList<Item> oldItems = new ArrayList<Item>();
+        // based on list size, select a pool of oldest items
+        int poolSize = 0;
+        if (filteredItems.size() <= 2) { 
+            poolSize = 1; 
+        } else if (filteredItems.size() <= 5) { 
+            poolSize = 2; 
+        } else if (filteredItems.size() <= 10) { 
+            poolSize = 3;
+        } else if (filteredItems.size() <= 20) {
+            poolSize = 5; 
+        } else if (filteredItems.size() <= 50) {
+            poolSize = 8; 
+        } else if (filteredItems.size() <= 100) {
+            poolSize = 10; 
+        } else { 
+            poolSize = 13;
         }
 
-        Item selectedItem = filteredItems.get(filteredItems.size() - 1);
-        
+        // add the items to the pool
+        for (int i = 0; i < poolSize; i++) {
+            oldItems.add(filteredItems.get(filteredItems.size() - 1 - i));
+        }
+        // randomize the items in the pool
+        Collections.shuffle(oldItems, new SecureRandom());
+
+        Item selectedItem = oldItems.get(poolSize - 1);
+
         // update the revisited time on this item
         selectedItem.setDateLastRevised(Date.from(Instant.now()));
         itemRepository.save(selectedItem);

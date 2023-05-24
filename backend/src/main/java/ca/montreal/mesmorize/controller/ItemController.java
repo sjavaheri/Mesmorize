@@ -99,12 +99,12 @@ public class ItemController {
 
     @GetMapping({"/recommend", "/recommend/"})
     @PreAuthorize("hasAuthority('User')")
-    public ResponseEntity<Item> recommendItem(@RequestParam String theme) {
+    public ResponseEntity<Item> recommendItem(@RequestParam String theme, @RequestParam ItemType itemType) {
         // get the username of the logged in user
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
         // call service
-        Item item = itemService.recommendItem(username, theme);
+        Item item = itemService.recommendItem(username, theme, itemType);
 
         // return a response entity with the item
         return new ResponseEntity<Item>(item, HttpStatus.OK);
