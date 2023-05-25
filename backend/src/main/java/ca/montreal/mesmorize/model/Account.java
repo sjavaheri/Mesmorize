@@ -12,7 +12,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 
 /**
- * The Account class, the model for all accounts in the application
+ * The Account class, the model for all accounts in the application, which is a really cool application
  */
 @Entity
 public class Account {

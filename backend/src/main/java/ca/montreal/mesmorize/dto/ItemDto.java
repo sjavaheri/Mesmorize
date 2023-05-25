@@ -51,7 +51,7 @@ public class ItemDto {
      * @param themes
      * @param practiceSessions
      * @param source
-     * @author Shidan Javaheri
+     * @author Shidan Javaheri 
      */
     public ItemDto(String name, String words, Date dateCreated, Date dateLastRevised, ItemType itemType, boolean favorite, boolean learnt,
             String username, Set<String> themeIds, Set<PracticeSession> practiceSessions, Source source) {
