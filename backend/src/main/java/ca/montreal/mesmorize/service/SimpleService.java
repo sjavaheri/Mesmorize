@@ -1,5 +1,7 @@
 package ca.montreal.mesmorize.service;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -9,6 +11,7 @@ import ca.montreal.mesmorize.dao.ThemeRepository;
 import ca.montreal.mesmorize.exception.GlobalException;
 import ca.montreal.mesmorize.model.Theme;
 import ca.montreal.mesmorize.util.DatabaseUtil;
+import jakarta.transaction.Transactional;
 
 /**
  * Service Class for very simple short methods
@@ -33,6 +36,7 @@ public class SimpleService {
      * @return the {@link Theme} object
      * @author Shidan Javaheri
      */
+    @Transactional
     public Theme createTheme(String name, String username){ 
 
         // check if user created theme exists
@@ -49,6 +53,28 @@ public class SimpleService {
         Theme theme = databaseUtil.createAndSaveTheme(name, accountRepository.findAccountByUsername(username));
         return theme;
 
+    }
+
+    /**
+     * Method to return a list of Themes matching the name criteria if provided
+     * @param name
+     * @param username
+     * @return an array list of {@link Theme} objects
+     * @author Shidan Javaheri 
+     */
+    @Transactional
+    public ArrayList<Theme> getThemes(String name, String username) { 
+        
+        ArrayList<Theme> themes = new ArrayList<Theme>(); 
+        if (!name.equals("")){
+            themes = themeRepository.findThemeByNameStartingWithIgnoreCaseAndAccountUsernameOrAccountUsername(name, username, "server@local.com"); 
+        } else { 
+            themes = themeRepository.findThemeByAccountUsernameOrAccountUsername(username, "server@local.com"); 
+        }
+        if (themes.isEmpty()){
+            throw new GlobalException(HttpStatus.NOT_FOUND, "There are not themes mathcing the given criteria");
+        }
+        return themes;
     }
     
 }

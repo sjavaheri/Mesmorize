@@ -98,8 +98,9 @@ public class MesmorizeApplication {
 			}
 
 			// Unity
-			if (themeRepository.findThemeByNameAndAccountUsername("Unity", "server@local.com") == null) {
-				databaseUtil.createAndSaveTheme("Unity", serverAccount);
+			if (themeRepository.findThemeByNameAndAccountUsername("Unity", "shidan.javaheri@mail.mcgill.ca") == null) {
+				Account account = accountRepository.findAccountByUsername("shidan.javaheri@mail.mcgill.ca");
+				databaseUtil.createAndSaveTheme("Unity", account);
 			}
 
 			// Should we include the Units of Each Book? 

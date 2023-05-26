@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ca.montreal.mesmorize.dto.FilterDto;
@@ -94,7 +95,30 @@ public class ItemController {
         // return a response entity with the DTOs
         return new ResponseEntity<ArrayList<ItemDto>>(itemDtos, HttpStatus.OK);
 
+    }
 
+    @GetMapping({"/recommend", "/recommend/"})
+    @PreAuthorize("hasAuthority('User')")
+    public ResponseEntity<Item> recommendItem(@RequestBody FilterDto filterDto) {
+        // make sure DTO is not null
+        if (filterDto == null){ 
+            throw new GlobalException(HttpStatus.BAD_REQUEST, "The filter dto is null"); 
+        }
+
+        // get the username of the logged in user
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        // unpack Dto
+        String theme = filterDto.getThemeName();
+        ItemType itemType = filterDto.getItemType();
+        Boolean favorite = filterDto.getFavorite(); 
+
+
+        // call service
+        Item item = itemService.recommendItem(username, theme, itemType, favorite);
+
+        // return a response entity with the item
+        return new ResponseEntity<Item>(item, HttpStatus.OK);
     }
 
 }

@@ -1,5 +1,11 @@
 package ca.montreal.mesmorize.service;
 
+import java.security.SecureRandom;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -101,14 +107,17 @@ public class ItemService {
     }
 
     /**
-     * Filter items in the database. Name, Itemtype, Theme, Words and Boolean are optional 
+     * Filter items in the database. Name, Itemtype, Theme, Words and Boolean are
+     * optional
+     * 
      * @param name
      * @param itemType
      * @param themeName
      * @param words
      * @param favorite
      * @param username
-     * @return
+     * @return an array list with {@link Item} objects
+     * @author Shidan Javaheri 
      */
     @Transactional
     public ArrayList<Item> filterItems(String name, ItemType itemType, String themeName, String words, Boolean favorite,
@@ -170,7 +179,7 @@ public class ItemService {
                     }
                 }
             }
-            return filteredItems;
+            items = filteredItems;
         }
 
         // if favorite is present, filter items by favorite
@@ -181,10 +190,126 @@ public class ItemService {
                     filteredItems.add(item);
                 }
             }
-            return filteredItems;
+            items = filteredItems;
         }
 
+        // check to make sure Items matched criteria
+        if (items.size() <= 0) {
+            throw new GlobalException(HttpStatus.BAD_REQUEST, "No items match the given criteria");
+        }
+
+        // sort items by oldest revisited time (last item in the list is the oldest)
+        Collections.sort(items, new Comparator<Item>() {
+            @Override
+            public int compare(Item item1, Item item2) {
+                Date date1 = item1.getDateLastRevised();
+                Date date2 = item2.getDateLastRevised();
+                return date1.compareTo(date2);
+
+            }
+        });
+
         return items;
+    }
+
+    /**
+     * Method to be recommended an item based on what you haven't said in the
+     * longest time
+     * 
+     * @param username
+     * @param themeName
+     * @return an {@link Item} object
+     * @author Shidan Javaheri 
+     */
+    @Transactional
+    public Item recommendItem(String username, String themeName, ItemType itemType, Boolean favorite) {
+
+        // find all items this user has
+        ArrayList<Item> items = itemRepository.findItemByAccountUsername(username);
+        ArrayList<Item> filteredItems = new ArrayList<Item>();
+
+        // recommend by theme
+        if (themeName != null) {
+            for (Item item : items) {
+                for (Theme theme : item.getThemes()) {
+                    if (theme.getName().equalsIgnoreCase(themeName)) {
+                        filteredItems.add(item);
+                    }
+                }
+            }
+        } else { 
+            filteredItems = items;
+        }
+
+        // reccomend by itemType
+        if (itemType != null) {
+            ArrayList<Item> temp = new ArrayList<Item>();
+            for (Item item : filteredItems) {
+                if (item.getItemType().equals(itemType)) {
+                    temp.add(item);
+                }
+            }
+            filteredItems = temp;
+        }
+
+        // recommend by favorite 
+        if (favorite != null) {
+            ArrayList<Item> temp = new ArrayList<Item>(); 
+            for (Item item : filteredItems){
+                if (favorite.equals(Boolean.valueOf(item.isFavorite()))){
+                    temp.add(item);
+                }
+            }
+            filteredItems = temp; 
+        }
+
+        // sort items by oldest revisited time (last item in the list is the oldest)
+        Collections.sort(filteredItems, new Comparator<Item>() {
+            @Override
+            public int compare(Item item1, Item item2) {
+                Date date1 = item1.getDateLastRevised();
+                Date date2 = item2.getDateLastRevised();
+                return date2.compareTo(date1);
+
+            }
+        });
+
+        ArrayList<Item> oldItems = new ArrayList<Item>();
+        // based on list size, select a pool of oldest items
+        int poolSize = 0;
+        if (filteredItems.size() <= 2) { 
+            poolSize = 1; 
+        } else if (filteredItems.size() <= 5) { 
+            poolSize = 2; 
+        } else if (filteredItems.size() <= 10) { 
+            poolSize = 3;
+        } else if (filteredItems.size() <= 20) {
+            poolSize = 5; 
+        } else if (filteredItems.size() <= 50) {
+            poolSize = 8; 
+        } else if (filteredItems.size() <= 100) {
+            poolSize = 10; 
+        } else { 
+            poolSize = 13;
+        }
+
+        // check to make sure Items matched criteria
+        if (filteredItems.size() <= 0) {
+            throw new GlobalException(HttpStatus.BAD_REQUEST, "No items match the given criteria");
+        }
+        // add the items to the pool
+        for (int i = 0; i < poolSize; i++) {
+            oldItems.add(filteredItems.get(filteredItems.size() - 1 - i));
+        }
+        // randomize the items in the pool
+        Collections.shuffle(oldItems, new SecureRandom());
+
+        Item selectedItem = oldItems.get(poolSize - 1);
+
+        // update the revisited time on this item
+        selectedItem.setDateLastRevised(Date.from(Instant.now()));
+        itemRepository.save(selectedItem);
+        return selectedItem;
     }
 
 }
