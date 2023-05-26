@@ -116,7 +116,8 @@ public class ItemService {
      * @param words
      * @param favorite
      * @param username
-     * @return
+     * @return an array list with {@link Item} objects
+     * @author Shidan Javaheri 
      */
     @Transactional
     public ArrayList<Item> filterItems(String name, ItemType itemType, String themeName, String words, Boolean favorite,
@@ -178,7 +179,7 @@ public class ItemService {
                     }
                 }
             }
-            return filteredItems;
+            items = filteredItems;
         }
 
         // if favorite is present, filter items by favorite
@@ -189,8 +190,24 @@ public class ItemService {
                     filteredItems.add(item);
                 }
             }
-            return filteredItems;
+            items = filteredItems;
         }
+
+        // check to make sure Items matched criteria
+        if (items.size() <= 0) {
+            throw new GlobalException(HttpStatus.BAD_REQUEST, "No items match the given criteria");
+        }
+
+        // sort items by oldest revisited time (last item in the list is the oldest)
+        Collections.sort(items, new Comparator<Item>() {
+            @Override
+            public int compare(Item item1, Item item2) {
+                Date date1 = item1.getDateLastRevised();
+                Date date2 = item2.getDateLastRevised();
+                return date1.compareTo(date2);
+
+            }
+        });
 
         return items;
     }
@@ -201,17 +218,18 @@ public class ItemService {
      * 
      * @param username
      * @param themeName
-     * @return
+     * @return an {@link Item} object
+     * @author Shidan Javaheri 
      */
     @Transactional
-    public Item recommendItem(String username, String themeName, ItemType itemType) {
+    public Item recommendItem(String username, String themeName, ItemType itemType, Boolean favorite) {
 
         // find all items this user has
         ArrayList<Item> items = itemRepository.findItemByAccountUsername(username);
         ArrayList<Item> filteredItems = new ArrayList<Item>();
 
         // recommend by theme
-        if (!themeName.equals("")) {
+        if (themeName != null) {
             for (Item item : items) {
                 for (Theme theme : item.getThemes()) {
                     if (theme.getName().equalsIgnoreCase(themeName)) {
@@ -220,7 +238,6 @@ public class ItemService {
                 }
             }
         } else { 
-            System.out.println("here");
             filteredItems = items;
         }
 
@@ -233,6 +250,17 @@ public class ItemService {
                 }
             }
             filteredItems = temp;
+        }
+
+        // recommend by favorite 
+        if (favorite != null) {
+            ArrayList<Item> temp = new ArrayList<Item>(); 
+            for (Item item : filteredItems){
+                if (favorite.equals(Boolean.valueOf(item.isFavorite()))){
+                    temp.add(item);
+                }
+            }
+            filteredItems = temp; 
         }
 
         // sort items by oldest revisited time (last item in the list is the oldest)
@@ -265,6 +293,10 @@ public class ItemService {
             poolSize = 13;
         }
 
+        // check to make sure Items matched criteria
+        if (filteredItems.size() <= 0) {
+            throw new GlobalException(HttpStatus.BAD_REQUEST, "No items match the given criteria");
+        }
         // add the items to the pool
         for (int i = 0; i < poolSize; i++) {
             oldItems.add(filteredItems.get(filteredItems.size() - 1 - i));

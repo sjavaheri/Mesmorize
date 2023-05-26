@@ -14,6 +14,7 @@ public interface AccountRepository extends CrudRepository<Account, String> {
      * Find account by username
      * @param username the username of the account
      * @return an account
+     * @author Shidan Javaheri 
      */
     Account findAccountByUsername(String username);
 

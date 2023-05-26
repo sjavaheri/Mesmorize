@@ -15,6 +15,7 @@ public interface ItemRepository extends CrudRepository<Item, String> {
      * Find all items by account username
      * @param username
      * @return an array list of all items belonging to the account
+     * @author Shidan Javaheri 
      */
     ArrayList<Item> findItemByAccountUsername(String username);
 
@@ -24,6 +25,7 @@ public interface ItemRepository extends CrudRepository<Item, String> {
      * @param name
      * @param username
      * @return the item with the given name and account username
+     * @author Shidan Javaheri 
      */
     Item findItemByNameAndAccountUsername(String name, String username);
 
@@ -32,6 +34,7 @@ public interface ItemRepository extends CrudRepository<Item, String> {
      * @param name
      * @param username
      * @return the item with the given name and account username
+     * @author Shidan Javaheri 
      */
     ArrayList<Item> findItemByAccountUsernameAndWordsContainingIgnoreCase(String username, String words);
    
@@ -41,7 +44,8 @@ public interface ItemRepository extends CrudRepository<Item, String> {
      * @param username
      * @param itemType
      * @param name
-     * @return
+     * @return an array list of items
+     * @author Shidan Javaheri 
      */
     ArrayList<Item> findItemByAccountUsernameAndItemTypeAndNameStartingWithIgnoreCaseAndWordsContainingIgnoreCase(String username, ItemType itemType, String name, String words);
 
@@ -51,7 +55,8 @@ public interface ItemRepository extends CrudRepository<Item, String> {
      * @param username
      * @param itemType
      * @param words
-     * @return
+     * @return an array list of items
+     * @author Shidan Javaheri 
      */
     ArrayList<Item> findItemByAccountUsernameAndItemTypeAndNameStartingWithIgnoreCase(String username, ItemType itemType, String name);
 
@@ -59,7 +64,8 @@ public interface ItemRepository extends CrudRepository<Item, String> {
      * Find an item by its account username and item type
      * @param username
      * @param itemType
-     * @return
+     * @return an array list of items
+     * @author Shidan Javaheri 
      */
     ArrayList<Item> findItemByAccountUsernameAndItemType(String username, ItemType itemType);
     
@@ -67,7 +73,8 @@ public interface ItemRepository extends CrudRepository<Item, String> {
      * Find an item by its account username and item type and matching words
      * @param username
      * @param itemType
-     * @return
+     * @return an array list of items
+     * @author Shidan Javaheri 
      */
     ArrayList<Item> findItemByAccountUsernameAndItemTypeAndWordsContainingIgnoreCase(String username, ItemType itemType, String words);
 
@@ -75,7 +82,8 @@ public interface ItemRepository extends CrudRepository<Item, String> {
      * Find an item by its account username and name (case insensitive)
      * @param username
      * @param name
-     * @return
+     * @return an array list of items
+     * @author Shidan Javaheri 
      */
     ArrayList<Item> findItemByAccountUsernameAndNameStartingWithIgnoreCase(String username, String name);
     
@@ -83,7 +91,8 @@ public interface ItemRepository extends CrudRepository<Item, String> {
      * Find an item by its account username and name (case insensitive) and matching words
      * @param username
      * @param name
-     * @return
+     * @return an array list of items
+     * @author Shidan Javaheri 
      */
     ArrayList<Item> findItemByAccountUsernameAndNameStartingWithIgnoreCaseAndWordsContainingIgnoreCase(String username, String name, String words);
 

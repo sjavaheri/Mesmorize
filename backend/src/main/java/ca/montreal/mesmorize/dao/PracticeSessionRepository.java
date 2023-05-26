@@ -11,5 +11,11 @@ import ca.montreal.mesmorize.model.PracticeSession;
  */
 public interface PracticeSessionRepository extends CrudRepository<PracticeSession, String> {
 
+   /**
+    * Find a practice session by its id
+    * @param id
+    * @return a practice session
+    * @author Shidan Javaheri 
+    */
    ArrayList<PracticeSession> findPracticeSessionByItemId(String id); 
 }
