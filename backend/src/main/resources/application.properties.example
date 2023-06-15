@@ -1,10 +1,19 @@
 server.port = ${PORT:8080}
 
+# Database Settings
 spring.datasource.driver-class-name=org.postgresql.Driver
-spring.jpa.hibernate.ddl-auto=create-drop
+spring.jpa.hibernate.ddl-auto=update
 spring.datasource.url=jdbc:postgresql://localhost:5432/mesmorize
 spring.datasource.username=postgres
 spring.datasource.password=password
+
+# Debugging Stats
 logging.level.org.springframework=DEBUG
 
-
+# Added for SpringDoc
+springdoc.packagesToScan=ca.montreal.mesmorize
+springdoc.pathsToMatch=/api/**
+springdoc.default-produces-media-type=application/json
+springdoc.show-login-endpoint=true
+springdoc.pre-loading-enabled=true
+springdoc.show-oauth2-endpoints=true

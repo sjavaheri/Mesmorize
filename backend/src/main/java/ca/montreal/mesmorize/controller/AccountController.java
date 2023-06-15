@@ -12,13 +12,18 @@ import org.springframework.web.bind.annotation.RestController;
 import ca.montreal.mesmorize.dto.AccountDto;
 import ca.montreal.mesmorize.exception.GlobalException;
 import ca.montreal.mesmorize.service.AccountService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * API endpoints for all Account related methods
  */
 
 @RestController
-@RequestMapping({ "api/account", "api/account/" })
+@RequestMapping({ "api/account" })
+@Tag(name="Account API", description="API endpoints for all Account related methods")
 public class AccountController {
 
     @Autowired
@@ -34,6 +39,9 @@ public class AccountController {
      */
     @PostMapping
     @PreAuthorize("hasAuthority('Server')")
+    @Operation(summary="Create an Account", description="Endpoint to create an account with User Authority. For now, Admin accounts cannot be created from the frontend")
+    @Parameter(name="AccountDto", description="An account DTO with containing the account information", required=true)
+    @ApiResponse(responseCode="200", description="Returns the account DTO with the password feild left empty")
     public ResponseEntity<AccountDto> createAccount(@RequestBody AccountDto accountDto) {
         // Unpack the DTO
         if (accountDto == null) {

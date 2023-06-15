@@ -57,93 +57,42 @@ public class AccountDto {
         this.lastname = account.getLastname();
     }
 
-
-    /**
-     * Get the id of the user.
-     *
-     * @return the id of the user
-     */
     public String getId() {
         return id;
     }
 
-    /**
-     * Set the id of the user.
-     *
-     * @param id - the id of the user
-     */
     public void setId(String id) {
         this.id = id;
     }
 
-    /**
-     * Get the username of the user.
-     *
-     * @return the username of the user
-     */
     public String getUsername() {
         return username;
     }
 
-    /**
-     * Set the username of the user.
-     *
-     * @param username - the username of the user
-     */
     public void setUsername(String username) {
         this.username = username;
     }
 
-    /**
-     * Get the firstname of the user.
-     *
-     * @return the firstname of the user
-     */
     public String getFirstname() {
         return firstname;
     }
 
-    /**
-     * Set the firstname of the user.
-     *
-     * @param firstname - the firstname of the user
-     */
     public void setFirstname(String firstname) {
         this.firstname = firstname;
     }
 
-    /**
-     * Get the lastname of the user.
-     *
-     * @return the lastname of the user
-     */
     public String getLastname() {
         return lastname;
     }
 
-    /**
-     * Set the lastname of the user.
-     *
-     * @param lastname - the lastname of the user
-     */
     public void setLastname(String lastname) {
         this.lastname = lastname;
     }
 
-    /**
-     * Get the password of the user.
-     *
-     * @return the password of the user
-     */
     public String getPassword() {
         return password;
     }
 
-    /**
-     * Set the password of the user.
-     *
-     * @param password - the password of the user
-     */
     public void setPassword(String password) {
         this.password = password;
     }

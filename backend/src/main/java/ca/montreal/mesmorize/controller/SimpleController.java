@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 import ca.montreal.mesmorize.dto.ThemeDto;
 import ca.montreal.mesmorize.model.Theme;
 import ca.montreal.mesmorize.service.SimpleService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 /**
  * API endpoints for very simple methods
@@ -32,7 +35,10 @@ public class SimpleController {
      * @return a confirmation message of theme creation
      * @author Shidan Javaheri
      */
-    @PostMapping({"api/theme", "api/theme/"})
+    @PostMapping({"api/theme"})
+    @Operation(summary="Create a Theme", description="Endpoint to create a Theme that belongs to a user's account")
+    @Parameter(name="String", description="The name of the theme that is being created ", required=true)
+    @ApiResponse(responseCode="200", description="Returns a string confirming that the theme was created")
     public ResponseEntity<String> createTheme(@RequestParam String name) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
@@ -48,7 +54,10 @@ public class SimpleController {
      * @return a response entity with the array list of theme dtos
      * @author Shidan Javaheri
      */
-    @GetMapping({"api/theme", "api/theme/"})
+    @GetMapping({"api/theme"})
+    @Operation(summary="Get Themes", description="Endpoint to search for both default and custom themes")
+    @Parameter(name="String", description="The name of the theme that is being searched for ", required=false)
+    @ApiResponse(responseCode="200", description="Retunrs an array list of theme DTOs that match the search criteria")
     public ResponseEntity<ArrayList<ThemeDto>> getThemes(@RequestParam String name) {
         // get username
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

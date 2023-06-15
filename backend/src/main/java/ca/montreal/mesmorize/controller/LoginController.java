@@ -14,13 +14,18 @@ import ca.montreal.mesmorize.dao.AccountRepository;
 import ca.montreal.mesmorize.dto.AccountDto;
 import ca.montreal.mesmorize.model.Account;
 import ca.montreal.mesmorize.service.LoginService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * API for authenticating users when they log in
  */
 
 @RestController
-@RequestMapping({ "api/login", "api/login/" })
+@RequestMapping({ "api/login" })
+@Tag(name = "Login", description = "API endpoint to Login")
 public class LoginController {
 
     @Autowired
@@ -43,6 +48,8 @@ public class LoginController {
      * @author Shidan Javaheri
      */
     @PostMapping()
+    @Operation(summary = "Login", description = "Endpoint to recieve a valid JWT token for a user")
+    @ApiResponse(responseCode = "200", description = "Returns a valid JWT token to be stored and used to access other endpoints")
     public String getToken() {
         // get the authentication object from the context
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -53,8 +60,12 @@ public class LoginController {
 
     /**
      * This method is used to verify that the user has a valid token
-     * @return 
+     * 
+     * @return
      */
+
+    @Operation(summary = "Validate a Token", description = "Endpoint to check if a JWT token is still valid")
+    @ApiResponse(responseCode = "200", description = "Returns an Account DTO with the password field left empty if the token is valid")
     @GetMapping()
     public ResponseEntity<AccountDto> verifyToken() {
 
