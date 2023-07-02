@@ -93,9 +93,10 @@ public class ItemController {
         String themeName = filterDto.getThemeName();
         ItemType itemType = filterDto.getItemType();
         Boolean favorite = filterDto.getFavorite();
+        String language = filterDto.getLanguage(); 
 
         // call service 
-        ArrayList<Item> items = itemService.filterItems(name, itemType, themeName, words, favorite, username);
+        ArrayList<Item> items = itemService.filterItems(name, itemType, themeName, words, favorite, language, username);
 
         // create DTOs
         ArrayList<ItemDto> itemDtos = new ArrayList<ItemDto>();
@@ -124,10 +125,10 @@ public class ItemController {
         String theme = filterDto.getThemeName();
         ItemType itemType = filterDto.getItemType();
         Boolean favorite = filterDto.getFavorite(); 
-
+        String language = filterDto.getLanguage();
 
         // call service
-        Item item = itemService.recommendItem(username, theme, itemType, favorite);
+        Item item = itemService.recommendItem(username, theme, itemType, favorite, language);
 
         // return a response entity with the item
         return new ResponseEntity<Item>(item, HttpStatus.OK);

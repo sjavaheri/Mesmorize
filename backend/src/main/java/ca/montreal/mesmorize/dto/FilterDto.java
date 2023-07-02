@@ -9,6 +9,7 @@ public class FilterDto {
     private String themeName;
     private String words;
     private Boolean favorite;
+    private String language; 
 
     public Boolean getFavorite() {
         return favorite;
@@ -52,5 +53,14 @@ public class FilterDto {
     public void setWords(String words) {
         this.words = words;
     }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+    
 
 }

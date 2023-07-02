@@ -87,6 +87,9 @@ public class ItemService {
         if (language.length() > 100) {
             throw new GlobalException(HttpStatus.BAD_REQUEST, "Item language cannot be more than 100 characters");
         }
+        if (!language.equals("English") && !language.equals("French") && !language.equals("Other")) { 
+            throw new GlobalException(null, "Currently, the only supported languages are English, French and Other"); 
+        }
         // make sure item chords are not more than 100 characters
         if (chords.length() > 100) {
             throw new GlobalException(HttpStatus.BAD_REQUEST, "Item chords cannot be more than 100 characters");
@@ -126,12 +129,13 @@ public class ItemService {
      * @param themeName
      * @param words
      * @param favorite
+     * @param language
      * @param username
      * @return an array list with {@link Item} objects
      * @author Shidan Javaheri 
      */
     @Transactional
-    public ArrayList<Item> filterItems(String name, ItemType itemType, String themeName, String words, Boolean favorite,
+    public ArrayList<Item> filterItems(String name, ItemType itemType, String themeName, String words, Boolean favorite, String language, 
             String username) {
 
         ArrayList<Item> items = new ArrayList<Item>();
@@ -204,6 +208,17 @@ public class ItemService {
             items = filteredItems;
         }
 
+        // if language is present, filter items by language
+        if (language != null) {
+            ArrayList<Item> filteredItems = new ArrayList<Item>();
+            for (Item item : items) {
+                if (item.getLanguage().equalsIgnoreCase(language)) {
+                    filteredItems.add(item);
+                }
+            }
+            items = filteredItems;
+        }
+
         // check to make sure Items matched criteria
         if (items.size() <= 0) {
             throw new GlobalException(HttpStatus.BAD_REQUEST, "No items match the given criteria");
@@ -229,11 +244,14 @@ public class ItemService {
      * 
      * @param username
      * @param themeName
+     * @param itemType
+     * @param favorite
+     * @param language
      * @return an {@link Item} object
      * @author Shidan Javaheri 
      */
     @Transactional
-    public Item recommendItem(String username, String themeName, ItemType itemType, Boolean favorite) {
+    public Item recommendItem(String username, String themeName, ItemType itemType, Boolean favorite, String language) {
 
         // find all items this user has
         ArrayList<Item> items = itemRepository.findItemByAccountUsername(username);
@@ -268,6 +286,17 @@ public class ItemService {
             ArrayList<Item> temp = new ArrayList<Item>(); 
             for (Item item : filteredItems){
                 if (favorite.equals(Boolean.valueOf(item.isFavorite()))){
+                    temp.add(item);
+                }
+            }
+            filteredItems = temp; 
+        }
+
+        // recommend by language
+        if (language != null) {
+            ArrayList<Item> temp = new ArrayList<Item>(); 
+            for (Item item : filteredItems){
+                if (language.equalsIgnoreCase(item.getLanguage())){
                     temp.add(item);
                 }
             }
