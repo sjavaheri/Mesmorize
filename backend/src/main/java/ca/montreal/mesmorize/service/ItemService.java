@@ -357,7 +357,7 @@ public class ItemService {
         if (item == null) { 
             throw new GlobalException(HttpStatus.BAD_REQUEST, "The requested Item does not exist");
         }
-        if (username.equals(item.getAccount().getUsername())) { 
+        if (!username.equals(item.getAccount().getUsername())) { 
             throw new GlobalException(HttpStatus.BAD_REQUEST, "You do not have permissions to access this Item");
         }
         
