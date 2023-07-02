@@ -11,8 +11,11 @@ import ca.montreal.mesmorize.dao.AccountRepository;
 import ca.montreal.mesmorize.dao.ThemeRepository;
 import ca.montreal.mesmorize.model.Account;
 import ca.montreal.mesmorize.util.DatabaseUtil;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.info.Info;
 
 @SpringBootApplication
+@OpenAPIDefinition(info = @Info(title = "Mesmorize API", version = "v1"))
 public class MesmorizeApplication {
 
 	public static void main(String[] args) {

@@ -9,6 +9,7 @@ import ca.montreal.mesmorize.model.Item;
 import ca.montreal.mesmorize.model.Source;
 import ca.montreal.mesmorize.model.Item.ItemType;
 import ca.montreal.mesmorize.util.DatabaseUtil;
+import io.swagger.v3.oas.annotations.Hidden;
 
 import java.sql.Date;
 import java.time.Instant;
@@ -40,6 +41,7 @@ public class DemoController {
    * @throws GlobalException with http status 418 and message "You are a teapot",
    *                         for demo purposes
    */
+  @Hidden
   @GetMapping
   @PreAuthorize("hasAuthority('User')")
   public String test() throws GlobalException {
@@ -66,6 +68,7 @@ public class DemoController {
    * @return the dto of choice
    * @author Shidan Javaheri
    */
+  @Hidden
   @PostMapping
   @PreAuthorize("hasAuthority('User')")
   public ResponseEntity<FilterDto> showDto() {

@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ca.montreal.mesmorize.dto.FilterDto;
@@ -22,13 +21,18 @@ import ca.montreal.mesmorize.model.Item;
 import ca.montreal.mesmorize.model.Source;
 import ca.montreal.mesmorize.model.Item.ItemType;
 import ca.montreal.mesmorize.service.ItemService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * API endpoints for all Item related methods
  */
 
 @RestController
-@RequestMapping({ "api/item", "api/item/" })
+@RequestMapping({ "api/item" })
+@Tag(name = "Item API", description = "API endpoints for all Item related methods")
 public class ItemController {
 
     @Autowired
@@ -43,6 +47,9 @@ public class ItemController {
      */
     @PostMapping
     @PreAuthorize("hasAuthority('User')")
+    @Operation(summary="Create an Item to Memorize", description="Endpoint to create an Item to Memorize")
+    @Parameter(name="ItemDto", description="An Item DTO containing the required feilds. Source is not required", required=true)
+    @ApiResponse(responseCode="200", description="Returns the Item Dto")
     public ResponseEntity<ItemDto> createItem(@RequestBody ItemDto itemDto) {
         // Unpack the DTO
         if (itemDto == null) {
@@ -71,6 +78,9 @@ public class ItemController {
 
     @GetMapping
     @PreAuthorize("hasAuthority('User')")
+    @Operation(summary="The Search Endpoint for Items", description="Endpoint to search and filter all of the items linked to an account")
+    @Parameter(name="FilterDto", description="An Filer DTO containing filters to be applied to the list of all the accounts items", required=true)
+    @ApiResponse(responseCode="200", description="A list of Item Dtos matching the criteria of the filter")
     public ResponseEntity<ArrayList<ItemDto>> filterItems(@RequestBody FilterDto filterDto){
         // unpack Dto if it is not null
         if (filterDto == null) {
@@ -97,8 +107,11 @@ public class ItemController {
 
     }
 
-    @GetMapping({"/recommend", "/recommend/"})
+    @GetMapping({"/recommend"})
     @PreAuthorize("hasAuthority('User')")
+    @Operation(summary="Recommend an Item to Practice", description="Endpoint to be recommended an item to practice")
+    @Parameter(name="FilterDto", description="A filter DTO containing only the Theme, ItemType and Favorite feilds", required=true)
+    @ApiResponse(responseCode="200", description="Returns the single recommended Item")
     public ResponseEntity<Item> recommendItem(@RequestBody FilterDto filterDto) {
         // make sure DTO is not null
         if (filterDto == null){ 
