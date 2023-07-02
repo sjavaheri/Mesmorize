@@ -346,10 +346,26 @@ public class ItemService {
 
         Item selectedItem = oldItems.get(poolSize - 1);
 
-        // update the revisited time on this item
-        selectedItem.setDateLastRevised(Date.from(Instant.now()));
         itemRepository.save(selectedItem);
         return selectedItem;
+    }
+
+    @Transactional
+    public Item practiceItem(String itemId, String username) { 
+        // retrive and perform checks on item
+        Item item = itemRepository.findById(itemId).orElse(null);
+        if (item == null) { 
+            throw new GlobalException(HttpStatus.BAD_REQUEST, "The requested Item does not exist");
+        }
+        if (username.equals(item.getAccount().getUsername())) { 
+            throw new GlobalException(HttpStatus.BAD_REQUEST, "You do not have permissions to access this Item");
+        }
+        
+        //update characteristics to show it has been practiced
+        item.setSecretTimesPracticed(item.getSecretTimesPracticed() + 1);
+        item.setDateLastRevised(Date.from(Instant.now())); 
+        itemRepository.save(item);
+        return item; 
     }
 
 }

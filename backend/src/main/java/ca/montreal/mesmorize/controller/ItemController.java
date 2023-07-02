@@ -10,8 +10,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ca.montreal.mesmorize.dto.FilterDto;
@@ -22,7 +24,6 @@ import ca.montreal.mesmorize.model.Source;
 import ca.montreal.mesmorize.model.Item.ItemType;
 import ca.montreal.mesmorize.service.ItemService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -47,8 +48,8 @@ public class ItemController {
      */
     @PostMapping
     @PreAuthorize("hasAuthority('User')")
-    @Operation(summary="Create an Item to Memorize", description="Endpoint to create an Item to Memorize")
-    @ApiResponse(responseCode="200", description="Returns the Item Dto")
+    @Operation(summary = "Create an Item to Memorize", description = "Endpoint to create an Item to Memorize")
+    @ApiResponse(responseCode = "200", description = "Returns the Item Dto")
     public ResponseEntity<ItemDto> createItem(@RequestBody ItemDto itemDto) {
         // Unpack the DTO
         if (itemDto == null) {
@@ -71,7 +72,8 @@ public class ItemController {
 
         // create item
         ItemDto newItemDto = new ItemDto(
-                itemService.createItem(name, words, itemType, favorite, learnt, themeIds,language, chords, source, username));
+                itemService.createItem(name, words, itemType, favorite, learnt, themeIds, language, chords, source,
+                        username));
 
         return new ResponseEntity<ItemDto>(newItemDto, HttpStatus.CREATED);
 
@@ -79,23 +81,23 @@ public class ItemController {
 
     @GetMapping
     @PreAuthorize("hasAuthority('User')")
-    @Operation(summary="The Search Endpoint for Items", description="Endpoint to search and filter all of the items linked to an account")
-    @ApiResponse(responseCode="200", description="A list of Item Dtos matching the criteria of the filter")
-    public ResponseEntity<ArrayList<ItemDto>> filterItems(@RequestBody FilterDto filterDto){
+    @Operation(summary = "The Search Endpoint for Items", description = "Endpoint to search and filter all of the items linked to an account")
+    @ApiResponse(responseCode = "200", description = "A list of Item Dtos matching the criteria of the filter")
+    public ResponseEntity<ArrayList<ItemDto>> filterItems(@RequestBody FilterDto filterDto) {
         // unpack Dto if it is not null
         if (filterDto == null) {
             throw new GlobalException(HttpStatus.BAD_REQUEST, "The filter dto is null");
         }
-        // get attributes 
+        // get attributes
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         String name = filterDto.getName();
         String words = filterDto.getWords();
         String themeName = filterDto.getThemeName();
         ItemType itemType = filterDto.getItemType();
         Boolean favorite = filterDto.getFavorite();
-        String language = filterDto.getLanguage(); 
+        String language = filterDto.getLanguage();
 
-        // call service 
+        // call service
         ArrayList<Item> items = itemService.filterItems(name, itemType, themeName, words, favorite, language, username);
 
         // create DTOs
@@ -108,14 +110,14 @@ public class ItemController {
 
     }
 
-    @GetMapping({"/recommend"})
+    @GetMapping({ "/recommend" })
     @PreAuthorize("hasAuthority('User')")
-    @Operation(summary="Recommend an Item to Practice", description="Endpoint to be recommended an item to practice")
-    @ApiResponse(responseCode="200", description="Returns the single recommended Item")
+    @Operation(summary = "Recommend an Item to Practice", description = "Endpoint to be recommended an item to practice")
+    @ApiResponse(responseCode = "200", description = "Returns the single recommended Item")
     public ResponseEntity<Item> recommendItem(@RequestBody FilterDto filterDto) {
         // make sure DTO is not null
-        if (filterDto == null){ 
-            throw new GlobalException(HttpStatus.BAD_REQUEST, "The filter dto is null"); 
+        if (filterDto == null) {
+            throw new GlobalException(HttpStatus.BAD_REQUEST, "The filter dto is null");
         }
 
         // get the username of the logged in user
@@ -124,7 +126,7 @@ public class ItemController {
         // unpack Dto
         String theme = filterDto.getThemeName();
         ItemType itemType = filterDto.getItemType();
-        Boolean favorite = filterDto.getFavorite(); 
+        Boolean favorite = filterDto.getFavorite();
         String language = filterDto.getLanguage();
 
         // call service
@@ -134,4 +136,19 @@ public class ItemController {
         return new ResponseEntity<Item>(item, HttpStatus.OK);
     }
 
+    @PutMapping("/reccomend")
+    @PreAuthorize("hasAuthority('User')")
+    @Operation(summary="Update the date last practiced of an Item",description="Endpoint to indicate that an item has been revisited or practiced after being recommended")
+    @ApiResponse(responseCode = "200", description = "Returns the updated Item")
+    public ResponseEntity<Item> updateItem(@RequestParam String itemId) {
+        
+        // get the username of the logged in user
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        // call service
+        Item item = itemService.practiceItem(itemId, username);
+
+        // return a response entity with the item
+        return new ResponseEntity<Item>(item, HttpStatus.OK);
+    }
 }
