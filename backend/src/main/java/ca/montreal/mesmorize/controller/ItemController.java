@@ -48,7 +48,6 @@ public class ItemController {
     @PostMapping
     @PreAuthorize("hasAuthority('User')")
     @Operation(summary="Create an Item to Memorize", description="Endpoint to create an Item to Memorize")
-    @Parameter(name="ItemDto", description="An Item DTO containing the required feilds. Source is not required", required=true)
     @ApiResponse(responseCode="200", description="Returns the Item Dto")
     public ResponseEntity<ItemDto> createItem(@RequestBody ItemDto itemDto) {
         // Unpack the DTO
@@ -64,13 +63,15 @@ public class ItemController {
         boolean learnt = itemDto.isLearnt();
         Set<String> themeIds = itemDto.getThemeIds();
         Source source = itemDto.getSource();
+        String language = itemDto.getLanguage();
+        String chords = itemDto.getChords();
 
         // get the username of the logged in user
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
         // create item
         ItemDto newItemDto = new ItemDto(
-                itemService.createItem(name, words, itemType, favorite, learnt, themeIds, source, username));
+                itemService.createItem(name, words, itemType, favorite, learnt, themeIds,language, chords, source, username));
 
         return new ResponseEntity<ItemDto>(newItemDto, HttpStatus.CREATED);
 
@@ -79,7 +80,6 @@ public class ItemController {
     @GetMapping
     @PreAuthorize("hasAuthority('User')")
     @Operation(summary="The Search Endpoint for Items", description="Endpoint to search and filter all of the items linked to an account")
-    @Parameter(name="FilterDto", description="An Filer DTO containing filters to be applied to the list of all the accounts items", required=true)
     @ApiResponse(responseCode="200", description="A list of Item Dtos matching the criteria of the filter")
     public ResponseEntity<ArrayList<ItemDto>> filterItems(@RequestBody FilterDto filterDto){
         // unpack Dto if it is not null
@@ -110,7 +110,6 @@ public class ItemController {
     @GetMapping({"/recommend"})
     @PreAuthorize("hasAuthority('User')")
     @Operation(summary="Recommend an Item to Practice", description="Endpoint to be recommended an item to practice")
-    @Parameter(name="FilterDto", description="A filter DTO containing only the Theme, ItemType and Favorite feilds", required=true)
     @ApiResponse(responseCode="200", description="Returns the single recommended Item")
     public ResponseEntity<Item> recommendItem(@RequestBody FilterDto filterDto) {
         // make sure DTO is not null

@@ -85,7 +85,7 @@ public class DemoController {
     Account validAccount = new Account("Test1", "Lastname", "test1@gmail.com", "a Cool password1", Authority.User);
     Item item = new Item("Hello", "It's Me", Date.from(Instant.now()), Date.from(Instant.now()), ItemType.Prayer, false,
         true,
-        validAccount, null, null, source);
+        validAccount, null, null, "English", "C F Am G", 0, source);
 
     return new ResponseEntity<FilterDto>(new FilterDto(), HttpStatus.OK);
   }

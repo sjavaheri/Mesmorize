@@ -18,12 +18,14 @@ import ca.montreal.mesmorize.service.SimpleService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * API endpoints for very simple methods
  * Includes endpoints for creating a theme
  */
 @RestController
+@Tag(name = "Simple Classes API", description = "API endpoints for simple classes")
 public class SimpleController {
 
     @Autowired
@@ -37,7 +39,7 @@ public class SimpleController {
      */
     @PostMapping({"api/theme"})
     @Operation(summary="Create a Theme", description="Endpoint to create a Theme that belongs to a user's account")
-    @Parameter(name="String", description="The name of the theme that is being created ", required=true)
+    @Parameter(name="name", description="The name of the theme that is being created ", required=true)
     @ApiResponse(responseCode="200", description="Returns a string confirming that the theme was created")
     public ResponseEntity<String> createTheme(@RequestParam String name) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -56,7 +58,7 @@ public class SimpleController {
      */
     @GetMapping({"api/theme"})
     @Operation(summary="Get Themes", description="Endpoint to search for both default and custom themes")
-    @Parameter(name="String", description="The name of the theme that is being searched for ", required=false)
+    @Parameter(name="name", description="The name of the theme that is being searched for ", required=false)
     @ApiResponse(responseCode="200", description="Retunrs an array list of theme DTOs that match the search criteria")
     public ResponseEntity<ArrayList<ThemeDto>> getThemes(@RequestParam String name) {
         // get username

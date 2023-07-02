@@ -27,7 +27,12 @@ public class ItemDto {
     private String username; 
     private Set<String> themeIds;
     private Set<PracticeSession> practiceSessions;
+    private String language;
+    private String chords;
+    private Integer secretTimesPracticed;
     private Source source;
+
+
 
     // Constructors
 
@@ -50,11 +55,14 @@ public class ItemDto {
      * @param account
      * @param themes
      * @param practiceSessions
+     * @param language
+     * @param chords
+     * @param secretTimesPracticed
      * @param source
      * @author Shidan Javaheri 
      */
     public ItemDto(String name, String words, Date dateCreated, Date dateLastRevised, ItemType itemType, boolean favorite, boolean learnt,
-            String username, Set<String> themeIds, Set<PracticeSession> practiceSessions, Source source) {
+            String username, Set<String> themeIds, Set<PracticeSession> practiceSessions, String language, String chords, Integer secretTimesPracticed, Source source) {
         this.name = name;
         this.words = words;
         this.dateCreated = dateCreated;
@@ -65,6 +73,9 @@ public class ItemDto {
         this.username = username;
         this.themeIds = themeIds;
         this.practiceSessions = practiceSessions;
+        this.language = language;
+        this.chords = chords;
+        this.secretTimesPracticed = secretTimesPracticed;
         this.source = source;
     }
 
@@ -183,6 +194,35 @@ public class ItemDto {
     public void setDateLastRevised(Date dateLastRevised) {
         this.dateLastRevised = dateLastRevised;
     }
+
+    public void setThemeIds(Set<String> themeIds) {
+        this.themeIds = themeIds;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
+    public String getChords() {
+        return chords;
+    }
+
+    public void setChords(String chords) {
+        this.chords = chords;
+    }
+
+    public Integer getSecretTimesPracticed() {
+        return secretTimesPracticed;
+    }
+
+    public void setSecretTimesPracticed(Integer secretTimesPracticed) {
+        this.secretTimesPracticed = secretTimesPracticed;
+    }
+    
     
 
 }

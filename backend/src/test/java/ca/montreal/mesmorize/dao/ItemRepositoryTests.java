@@ -80,7 +80,7 @@ public class ItemRepositoryTests {
         Set<PracticeSession> practiceSessions = new HashSet<PracticeSession>();
         Item item = databaseUtil.createAndSaveItem("O Befriended Stranger",
                 "O Befriended Stranger! The candle of thine heart...", ItemType.Song, false,
-                false, account, themes, practiceSessions, source);
+                false, account, themes, practiceSessions, "English", "Am C F G", 0, source);
 
         // load the item from the database
         Item loadedItem = itemRepository.findItemByNameAndAccountUsername("O Befriended Stranger", "mo.salah@gmail.com");
@@ -112,7 +112,7 @@ public class ItemRepositoryTests {
         Set<PracticeSession> practiceSessions = new HashSet<PracticeSession>();
         Item item = databaseUtil.createAndSaveItem("O Befriended Stranger",
                 "O Befriended Stranger! The candle of thine heart...", ItemType.Song, false,
-                false, account, null, practiceSessions, null);
+                false, account, null, practiceSessions, "English", "Am F C G", 0, null);
 
         // load the item from the database
         Item loadedItem = itemRepository.findItemByNameAndAccountUsername("O Befriended Stranger", "mo.salah@gmail.com");

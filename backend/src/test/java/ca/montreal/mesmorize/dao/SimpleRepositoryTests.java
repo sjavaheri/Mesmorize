@@ -122,7 +122,7 @@ public class SimpleRepositoryTests {
         Set<PracticeSession> practiceSessions = new HashSet<PracticeSession>();
         databaseUtil.createAndSaveItem("O Befriended Stranger",
                 "O Befriended Stranger! The candle of thine heart...", ItemType.Song, false,
-                false, account, themes, practiceSessions, source);
+                false, account, themes, practiceSessions, "English", "Am C F G", 0, source);
 
         // get the item
         Item item = itemRepository.findItemByNameAndAccountUsername("O Befriended Stranger", "mo.salah@gmail.com");

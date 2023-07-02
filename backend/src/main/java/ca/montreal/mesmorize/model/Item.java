@@ -45,7 +45,7 @@ public class Item {
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String name;
 
     @Column(nullable = false)
@@ -69,6 +69,15 @@ public class Item {
 
     @Column(nullable = false)
     private boolean learnt;
+
+    @Column(nullable = false)
+    private String language; 
+
+    @Column(nullable = false)
+    private String chords; 
+
+    @Column(nullable = false)
+    private Integer secretTimesPracticed; 
 
     // -----------
     // Associations
@@ -117,11 +126,14 @@ public class Item {
      * @param themes
      * @param practiceSessions
      * @param source
+     * @param language
+     * @param chords
+     * @param secretTimesPracticed
      * @author Shidan Javaheri
      */
     public Item(String name, String words, Date dateCreated, Date dateLastRevised, ItemType itemType, boolean favorite,
             boolean learnt,
-            Account account, Set<Theme> themes, Set<PracticeSession> practiceSessions, Source source) {
+            Account account, Set<Theme> themes, Set<PracticeSession> practiceSessions, String language, String chords, Integer secretTimesPracticed, Source source) {
         this.name = name;
         this.words = words;
         this.dateCreated = dateCreated;
@@ -133,6 +145,9 @@ public class Item {
         this.themes = themes;
         this.practiceSessions = practiceSessions;
         this.source = source;
+        this.language = language;
+        this.chords = chords;
+        this.secretTimesPracticed = secretTimesPracticed;
     }
 
     // -----------
@@ -234,5 +249,31 @@ public class Item {
     public void setDateLastRevised(Date dateLastRevised) {
         this.dateLastRevised = dateLastRevised;
     }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
+    public String getChords() {
+        return chords;
+    }
+
+    public void setChords(String chords) {
+        this.chords = chords;
+    }
+
+    public Integer getSecretTimesPracticed() {
+        return secretTimesPracticed;
+    }
+
+    public void setSecretTimesPracticed(Integer secretTimesPracticed) {
+        this.secretTimesPracticed = secretTimesPracticed;
+    }
+
+    
 
 }

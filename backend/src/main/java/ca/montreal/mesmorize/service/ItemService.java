@@ -55,6 +55,8 @@ public class ItemService {
      * @param favorite
      * @param learnt
      * @param themeIds
+     * @param language
+     * @param chords
      * @param source
      * @param username
      * @return an {@link Item} object
@@ -62,7 +64,7 @@ public class ItemService {
      */
     @Transactional
     public Item createItem(String name, String words, ItemType itemType, boolean favorite,
-            boolean learnt, Set<String> themeIds, Source source, String username) {
+            boolean learnt, Set<String> themeIds, String language, String chords, Source source, String username) {
 
         // make sure account doesn't already have another item of same name
         if (itemRepository.findItemByNameAndAccountUsername(name, username) != null) {
@@ -80,9 +82,18 @@ public class ItemService {
         if (name.length() > 100) {
             throw new GlobalException(HttpStatus.BAD_REQUEST, "Item name cannot be more than 100 characters");
         }
+        
+        // make sure item language is not more than 100 characters
+        if (language.length() > 100) {
+            throw new GlobalException(HttpStatus.BAD_REQUEST, "Item language cannot be more than 100 characters");
+        }
+        // make sure item chords are not more than 100 characters
+        if (chords.length() > 100) {
+            throw new GlobalException(HttpStatus.BAD_REQUEST, "Item chords cannot be more than 100 characters");
+        }
 
         // make sure no input feild is null
-        if (name == null || words == null || itemType == null || username == null) {
+        if (name == null || words == null || itemType == null || username == null || language == null || chords == null) {
             throw new GlobalException(HttpStatus.BAD_REQUEST, "One or more input fields are null");
         }
 
@@ -100,7 +111,7 @@ public class ItemService {
 
         // create and save item
         Item newItem = databaseUtil.createAndSaveItem(name, words, itemType, favorite, learnt,
-                accountRepository.findAccountByUsername(username), themesList, null, source);
+                accountRepository.findAccountByUsername(username), themesList, null,language, chords, 0, source);
 
         return newItem;
 

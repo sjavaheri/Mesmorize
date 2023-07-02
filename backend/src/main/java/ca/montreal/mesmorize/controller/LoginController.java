@@ -15,7 +15,6 @@ import ca.montreal.mesmorize.dto.AccountDto;
 import ca.montreal.mesmorize.model.Account;
 import ca.montreal.mesmorize.service.LoginService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -25,7 +24,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping({ "api/login" })
-@Tag(name = "Login", description = "API endpoint to Login")
+@Tag(name = "Login API", description = "API endpoint to Login")
 public class LoginController {
 
     @Autowired
