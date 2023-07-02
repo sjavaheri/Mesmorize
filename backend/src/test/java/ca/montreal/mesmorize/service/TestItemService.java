@@ -72,7 +72,7 @@ public class TestItemService {
         this.practiceSessions = new HashSet<PracticeSession>();
         this.validAccount = new Account("Test1", "Lastname", "test1@gmail.com", "a Cool password1", Authority.User);
         this.validItem = new Item("Hello", "It's Me", Date.from(Instant.now()),Date.from(Instant.now()), ItemType.Prayer, false, true,
-                validAccount, themes, practiceSessions, null);
+                validAccount, themes, practiceSessions, "English", "C G F Am", 0, null);
     }
 
     /**
@@ -87,10 +87,10 @@ public class TestItemService {
         // no need to mock itemRepository because we want it to return null
         when(accountRepository.findAccountByUsername("test1@gmail.com")).thenAnswer((InvocationOnMock invocation) -> validAccount); 
         lenient().when(sourceRepository.findSourceByTitle(any(String.class))).thenAnswer((InvocationOnMock invocation) -> null); 
-        lenient().when(databaseUtil.createAndSaveItem(any(String.class), any(String.class), any(ItemType.class), any(Boolean.class), any(Boolean.class), any(Account.class),any(), any(), any())).thenAnswer((InvocationOnMock invocation) -> validItem); 
+        lenient().when(databaseUtil.createAndSaveItem(any(String.class), any(String.class), any(ItemType.class), any(Boolean.class), any(Boolean.class), any(Account.class),any(), any(), any(String.class), any(String.class), any (Integer.class),any())).thenAnswer((InvocationOnMock invocation) -> validItem); 
 
         // call method
-        Item createdItem = itemService.createItem("Hello", "It's Me", ItemType.Prayer, false, true, null, null,"test1@gmail.com");
+        Item createdItem = itemService.createItem("Hello", "It's Me", ItemType.Prayer, false, true, null,"English", "Am C F G", null,"test1@gmail.com");
 
         // assertions
         assertEquals(validItem.getName(), createdItem.getName());

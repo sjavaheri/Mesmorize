@@ -86,11 +86,14 @@ public class DatabaseUtil {
      * @param themes
      * @param practiceSessions
      * @param source
+     * @param language
+     * @param chords
+     * @param secretTimesPracticed
      * @return the {@link Item object} right before being saved
      * @author Shidan Javaheri
      */
     public Item createAndSaveItem(String name, String words, ItemType itemType, boolean favorite,
-            boolean learnt, Account account, Set<Theme> themes, Set<PracticeSession> practiceSessions, Source source) {
+            boolean learnt, Account account, Set<Theme> themes, Set<PracticeSession> practiceSessions, String language, String chords, Integer secretTimesPracticed, Source source) {
         Item item = new Item();
         item.setName(name);
         item.setWords(words);
@@ -102,6 +105,9 @@ public class DatabaseUtil {
         item.setAccount(account);
         item.setThemes(themes);
         item.setPracticeSessions(practiceSessions);
+        item.setLanguage(language);
+        item.setChords(chords);
+        item.setSecretTimesPracticed(secretTimesPracticed);
         if (source != null) {
             item.setSource(source);
         }

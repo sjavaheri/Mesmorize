@@ -55,6 +55,8 @@ public class ItemService {
      * @param favorite
      * @param learnt
      * @param themeIds
+     * @param language
+     * @param chords
      * @param source
      * @param username
      * @return an {@link Item} object
@@ -62,7 +64,7 @@ public class ItemService {
      */
     @Transactional
     public Item createItem(String name, String words, ItemType itemType, boolean favorite,
-            boolean learnt, Set<String> themeIds, Source source, String username) {
+            boolean learnt, Set<String> themeIds, String language, String chords, Source source, String username) {
 
         // make sure account doesn't already have another item of same name
         if (itemRepository.findItemByNameAndAccountUsername(name, username) != null) {
@@ -80,9 +82,21 @@ public class ItemService {
         if (name.length() > 100) {
             throw new GlobalException(HttpStatus.BAD_REQUEST, "Item name cannot be more than 100 characters");
         }
+        
+        // make sure item language is not more than 100 characters
+        if (language.length() > 100) {
+            throw new GlobalException(HttpStatus.BAD_REQUEST, "Item language cannot be more than 100 characters");
+        }
+        if (!language.equals("English") && !language.equals("French") && !language.equals("Other")) { 
+            throw new GlobalException(null, "Currently, the only supported languages are English, French and Other"); 
+        }
+        // make sure item chords are not more than 100 characters
+        if (chords.length() > 100) {
+            throw new GlobalException(HttpStatus.BAD_REQUEST, "Item chords cannot be more than 100 characters");
+        }
 
         // make sure no input feild is null
-        if (name == null || words == null || itemType == null || username == null) {
+        if (name == null || words == null || itemType == null || username == null || language == null || chords == null) {
             throw new GlobalException(HttpStatus.BAD_REQUEST, "One or more input fields are null");
         }
 
@@ -100,7 +114,7 @@ public class ItemService {
 
         // create and save item
         Item newItem = databaseUtil.createAndSaveItem(name, words, itemType, favorite, learnt,
-                accountRepository.findAccountByUsername(username), themesList, null, source);
+                accountRepository.findAccountByUsername(username), themesList, null,language, chords, 0, source);
 
         return newItem;
 
@@ -115,12 +129,13 @@ public class ItemService {
      * @param themeName
      * @param words
      * @param favorite
+     * @param language
      * @param username
      * @return an array list with {@link Item} objects
      * @author Shidan Javaheri 
      */
     @Transactional
-    public ArrayList<Item> filterItems(String name, ItemType itemType, String themeName, String words, Boolean favorite,
+    public ArrayList<Item> filterItems(String name, ItemType itemType, String themeName, String words, Boolean favorite, String language, 
             String username) {
 
         ArrayList<Item> items = new ArrayList<Item>();
@@ -193,6 +208,17 @@ public class ItemService {
             items = filteredItems;
         }
 
+        // if language is present, filter items by language
+        if (language != null) {
+            ArrayList<Item> filteredItems = new ArrayList<Item>();
+            for (Item item : items) {
+                if (item.getLanguage().equalsIgnoreCase(language)) {
+                    filteredItems.add(item);
+                }
+            }
+            items = filteredItems;
+        }
+
         // check to make sure Items matched criteria
         if (items.size() <= 0) {
             throw new GlobalException(HttpStatus.BAD_REQUEST, "No items match the given criteria");
@@ -218,11 +244,14 @@ public class ItemService {
      * 
      * @param username
      * @param themeName
+     * @param itemType
+     * @param favorite
+     * @param language
      * @return an {@link Item} object
      * @author Shidan Javaheri 
      */
     @Transactional
-    public Item recommendItem(String username, String themeName, ItemType itemType, Boolean favorite) {
+    public Item recommendItem(String username, String themeName, ItemType itemType, Boolean favorite, String language) {
 
         // find all items this user has
         ArrayList<Item> items = itemRepository.findItemByAccountUsername(username);
@@ -257,6 +286,17 @@ public class ItemService {
             ArrayList<Item> temp = new ArrayList<Item>(); 
             for (Item item : filteredItems){
                 if (favorite.equals(Boolean.valueOf(item.isFavorite()))){
+                    temp.add(item);
+                }
+            }
+            filteredItems = temp; 
+        }
+
+        // recommend by language
+        if (language != null) {
+            ArrayList<Item> temp = new ArrayList<Item>(); 
+            for (Item item : filteredItems){
+                if (language.equalsIgnoreCase(item.getLanguage())){
                     temp.add(item);
                 }
             }
