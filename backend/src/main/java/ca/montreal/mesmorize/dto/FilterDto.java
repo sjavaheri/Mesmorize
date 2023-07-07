@@ -2,6 +2,9 @@ package ca.montreal.mesmorize.dto;
 
 import ca.montreal.mesmorize.model.Item.ItemType;
 
+/**
+ * Data Transfer Object for Filtering Items
+ */
 public class FilterDto {
 
     private String name;
@@ -10,6 +13,32 @@ public class FilterDto {
     private String words;
     private Boolean favorite;
     private String language; 
+    
+
+    /**
+     * Null constructor
+     */
+    public FilterDto() {
+    }
+    
+    /**
+     * Constructor with all attributes
+     * @param name
+     * @param itemType
+     * @param themeName
+     * @param words
+     * @param favorite
+     * @param language
+     */
+    public FilterDto(String name, ItemType itemType, String themeName, String words, Boolean favorite,
+            String language) {
+        this.name = name;
+        this.itemType = itemType;
+        this.themeName = themeName;
+        this.words = words;
+        this.favorite = favorite;
+        this.language = language;
+    }
 
     public Boolean getFavorite() {
         return favorite;
@@ -17,9 +46,6 @@ public class FilterDto {
 
     public void setFavorite(Boolean favorite) {
         this.favorite = favorite;
-    }
-
-    public FilterDto() {
     }
 
     public String getName() {

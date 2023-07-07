@@ -79,6 +79,9 @@ public class ItemService {
         }
 
         // make sure item name is not more than 100 characters
+        if (name == null) {
+            throw new GlobalException(HttpStatus.BAD_REQUEST, "Item name cannot be null");
+        }
         if (name.length() > 100) {
             throw new GlobalException(HttpStatus.BAD_REQUEST, "Item name cannot be more than 100 characters");
         }
@@ -156,6 +159,7 @@ public class ItemService {
             } else {
                 if (words == null) {
                     items = itemRepository.findItemByAccountUsername(username);
+                    System.out.println("items: " + username + " " + items.size());
                 } else {
                     items = itemRepository.findItemByAccountUsernameAndWordsContainingIgnoreCase(username, words);
                 }

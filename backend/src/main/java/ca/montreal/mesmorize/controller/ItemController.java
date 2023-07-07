@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ca.montreal.mesmorize.dto.FilterDto;
 import ca.montreal.mesmorize.dto.ItemDto;
+import ca.montreal.mesmorize.dto.ItemRequestDto;
 import ca.montreal.mesmorize.exception.GlobalException;
 import ca.montreal.mesmorize.model.Item;
 import ca.montreal.mesmorize.model.Source;
@@ -42,30 +43,30 @@ public class ItemController {
     /**
      * Endpoint to create an item
      * 
-     * @param itemDto
+     * @param itemRequestDto
      * @return a response entity with HTTP status created and the item dto
      * @author Shidan Javaheri
      */
     @PostMapping
     @PreAuthorize("hasAuthority('User')")
     @Operation(summary = "Create an Item to Memorize", description = "Endpoint to create an Item to Memorize")
-    @ApiResponse(responseCode = "200", description = "Returns the Item Dto")
-    public ResponseEntity<ItemDto> createItem(@RequestBody ItemDto itemDto) {
+    @ApiResponse(responseCode = "201", description = "Returns the Item Dto")
+    public ResponseEntity<ItemDto> createItem(@RequestBody ItemRequestDto itemRequestDto) {
         // Unpack the DTO
-        if (itemDto == null) {
+        if (itemRequestDto == null) {
             throw new GlobalException(HttpStatus.BAD_REQUEST, "The item dto is null");
         }
 
         // unpack the DTO wiht these attributes
-        String name = itemDto.getName();
-        String words = itemDto.getWords();
-        ItemType itemType = itemDto.getItemType();
-        boolean favorite = itemDto.isFavorite();
-        boolean learnt = itemDto.isLearnt();
-        Set<String> themeIds = itemDto.getThemeIds();
-        Source source = itemDto.getSource();
-        String language = itemDto.getLanguage();
-        String chords = itemDto.getChords();
+        String name = itemRequestDto.getName();
+        String words = itemRequestDto.getWords();
+        ItemType itemType = itemRequestDto.getItemType();
+        boolean favorite = itemRequestDto.isFavorite();
+        boolean learnt = itemRequestDto.isLearnt();
+        Set<String> themeIds = itemRequestDto.getThemeIds();
+        Source source = itemRequestDto.getSource();
+        String language = itemRequestDto.getLanguage();
+        String chords = itemRequestDto.getChords();
 
         // get the username of the logged in user
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -79,10 +80,10 @@ public class ItemController {
 
     }
 
-    @GetMapping
+    @PostMapping("/search")
     @PreAuthorize("hasAuthority('User')")
     @Operation(summary = "The Search Endpoint for Items", description = "Endpoint to search and filter all of the items linked to an account")
-    @ApiResponse(responseCode = "200", description = "A list of Item Dtos matching the criteria of the filter")
+    @ApiResponse(responseCode = "201", description = "A list of Item Dtos matching the criteria of the filter")
     public ResponseEntity<ArrayList<ItemDto>> filterItems(@RequestBody FilterDto filterDto) {
         // unpack Dto if it is not null
         if (filterDto == null) {
@@ -110,7 +111,7 @@ public class ItemController {
 
     }
 
-    @GetMapping({ "/recommend" })
+    @PostMapping({ "/recommend" })
     @PreAuthorize("hasAuthority('User')")
     @Operation(summary = "Recommend an Item to Practice", description = "Endpoint to be recommended an item to practice")
     @ApiResponse(responseCode = "200", description = "Returns the single recommended Item")
@@ -136,9 +137,9 @@ public class ItemController {
         return new ResponseEntity<Item>(item, HttpStatus.OK);
     }
 
-    @PutMapping("/reccomend")
+    @PutMapping("/recommend")
     @PreAuthorize("hasAuthority('User')")
-    @Operation(summary="Update the date last practiced of an Item",description="Endpoint to indicate that an item has been revisited or practiced after being recommended")
+    @Operation(summary="Confirm the Practice of an Item",description="Endpoint to indicate that an item has been revisited or practiced after being recommended")
     @ApiResponse(responseCode = "200", description = "Returns the updated Item")
     public ResponseEntity<Item> updateItem(@RequestParam String itemId) {
         
