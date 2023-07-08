@@ -16,7 +16,7 @@ import ca.montreal.mesmorize.model.Item.ItemType;
 public class ItemDto {
 
     // Attributes
-
+    private String id; 
     private String name;
     private String words;
     private Date dateCreated;
@@ -26,7 +26,7 @@ public class ItemDto {
     private boolean learnt;
     private String username; 
     private Set<String> themeIds;
-    private Set<PracticeSession> practiceSessions;
+    private Set<String> practiceSessionIds;
     private String language;
     private String chords;
     private Integer secretTimesPracticed;
@@ -54,15 +54,17 @@ public class ItemDto {
      * @param learnt
      * @param account
      * @param themes
-     * @param practiceSessions
+     * @param practiceSessionIds
      * @param language
      * @param chords
      * @param secretTimesPracticed
      * @param source
      * @author Shidan Javaheri 
      */
-    public ItemDto(String name, String words, Date dateCreated, Date dateLastRevised, ItemType itemType, boolean favorite, boolean learnt,
-            String username, Set<String> themeIds, Set<PracticeSession> practiceSessions, String language, String chords, Integer secretTimesPracticed, Source source) {
+    public ItemDto(String id, String name, String words, Date dateCreated, Date dateLastRevised, ItemType itemType, boolean favorite, boolean learnt,
+            String username, Set<String> themeIds, Set<String> practiceSessionIds, String language, String chords, Integer secretTimesPracticed, Source source) {
+        
+        this.id = id; 
         this.name = name;
         this.words = words;
         this.dateCreated = dateCreated;
@@ -72,7 +74,7 @@ public class ItemDto {
         this.learnt = learnt;
         this.username = username;
         this.themeIds = themeIds;
-        this.practiceSessions = practiceSessions;
+        this.practiceSessionIds = practiceSessionIds;
         this.language = language;
         this.chords = chords;
         this.secretTimesPracticed = secretTimesPracticed;
@@ -86,6 +88,7 @@ public class ItemDto {
      * @author Shidan Javaheri
      */
     public ItemDto(Item item) {
+        this.id = item.getId();
         this.name = item.getName();
         this.words = item.getWords();
         this.dateCreated = item.getDateCreated();
@@ -103,8 +106,15 @@ public class ItemDto {
                 this.themeIds.add(theme.getId());
             }
         }
-        this.practiceSessions = item.getPracticeSessions();
+        if ( item.getPracticeSessions() != null) {
+            for (PracticeSession practiceSession : item.getPracticeSessions()) {
+                this.practiceSessionIds.add(practiceSession.getId());
+            }
+        }
+        this.language = item.getLanguage();
         this.source = item.getSource();
+        this.chords = item.getChords();
+        
     }
 
     public String getName() {
@@ -171,12 +181,12 @@ public class ItemDto {
         this.themeIds = themeIds;
     }
 
-    public Set<PracticeSession> getPracticeSessions() {
-        return practiceSessions;
+    public Set<String> getPracticeSessions() {
+        return practiceSessionIds;
     }
 
-    public void setPracticeSessions(Set<PracticeSession> practiceSessions) {
-        this.practiceSessions = practiceSessions;
+    public void setPracticeSessions(Set<String> practiceSessionIds) {
+        this.practiceSessionIds = practiceSessionIds;
     }
 
     public Source getSource() {
@@ -221,6 +231,14 @@ public class ItemDto {
 
     public void setSecretTimesPracticed(Integer secretTimesPracticed) {
         this.secretTimesPracticed = secretTimesPracticed;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
     
     

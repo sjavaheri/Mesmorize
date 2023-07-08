@@ -49,7 +49,14 @@ public class SimpleService {
             throw new GlobalException(HttpStatus.BAD_REQUEST, "A Theme with this name already exists");
         }
 
+        // check if name is blank
+        if (name.isBlank()) {
+            throw new GlobalException(HttpStatus.BAD_REQUEST, "The theme name cannot be blank");
+        }
+
         // otherwise create theme
+
+        // check if 
         Theme theme = databaseUtil.createAndSaveTheme(name, accountRepository.findAccountByUsername(username));
         return theme;
 
@@ -72,7 +79,7 @@ public class SimpleService {
             themes = themeRepository.findThemeByAccountUsernameOrAccountUsername(username, "server@local.com"); 
         }
         if (themes.isEmpty()){
-            throw new GlobalException(HttpStatus.NOT_FOUND, "There are not themes mathcing the given criteria");
+            throw new GlobalException(HttpStatus.NOT_FOUND, "There are no themes mathcing the given criteria");
         }
         return themes;
     }

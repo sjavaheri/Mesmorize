@@ -39,7 +39,7 @@ public class AccountController {
      */
     @PostMapping
     @PreAuthorize("hasAuthority('Server')")
-    @Operation(summary="Create an Account", description="Endpoint to create an account with User Authority. For now, Admin accounts cannot be created from the frontend")
+    @Operation(summary="Create an Account", description="Endpoint to create an account with User Authority. For now, Admin accounts cannot be created from the frontend. Leave the id field empty")
     @ApiResponse(responseCode="200", description="Returns the account DTO with the password feild left empty")
     public ResponseEntity<AccountDto> createAccount(@RequestBody AccountDto accountDto) {
         // Unpack the DTO

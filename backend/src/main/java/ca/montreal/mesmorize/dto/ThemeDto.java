@@ -61,8 +61,5 @@ public class ThemeDto {
     public void setAccountUsername(String accountUsername) {
         this.accountUsername = accountUsername;
     }
-
-    
-    
-    
+ 
 }
